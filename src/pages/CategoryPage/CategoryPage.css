@@ -16,13 +16,23 @@ a:hover {
   text-decoration: underline;
 }
 
+/* Prevent input zoom on mobile */
+input, textarea, select, button {
+  font-size: 16px;
+}
+
+/* Prevent double-tap zoom on some browsers */
+html, body {
+  touch-action: manipulation;
+}
+
 /* ===== Navbar ===== */
 .category-nav-links {
   display: none;
   flex-direction: column;
   background-color: #fff;
   position: absolute;
-  top: 60px; /* Adjust based on your navbar height */
+  top: 60px;
   right: 0;
   width: 200px;
   z-index: 1000;
@@ -46,7 +56,6 @@ a:hover {
   }
 }
 
-
 .category-hamburger .bar {
   width: 25px;
   height: 3px;
@@ -57,25 +66,24 @@ a:hover {
 .category-hamburger .bar.open:nth-child(1) {
   transform: rotate(45deg) translateY(8px);
 }
-
 .category-hamburger .bar.open:nth-child(2) {
   opacity: 0;
 }
-
 .category-hamburger .bar.open:nth-child(3) {
   transform: rotate(-45deg) translateY(-8px);
 }
+
 .category-navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(10, 26, 47, 0.9); /* Slightly transparent dark blue */
+  background-color: rgba(10, 26, 47, 0.9);
   padding: 1rem 2rem;
   color: white;
   position: sticky;
   top: 0;
   z-index: 999;
-  backdrop-filter: blur(5px); /* Adds a frosted glass effect */
+  backdrop-filter: blur(5px);
 }
 
 .category-logo {
@@ -98,7 +106,7 @@ a:hover {
 }
 
 .category-nav-links li a:hover {
-  color: #87ceeb; /* Light sky blue for hover effect */
+  color: #87ceeb;
 }
 
 .category-hamburger {
@@ -113,7 +121,6 @@ a:hover {
   height: 3px;
   background-color: white;
 }
-
 
 /* ===== PIN Input ===== */
 .category-pin-container {
@@ -197,8 +204,6 @@ a:hover {
   padding: 1.5rem 2rem;
   justify-content: center;
 }
-
-/* Pills look same, no change */
 
 /* ===== Wallpapers ===== */
 .category-wallpapers {
