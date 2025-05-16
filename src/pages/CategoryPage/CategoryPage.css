@@ -20,29 +20,32 @@ a:hover {
 .category-nav-links {
   display: none;
   flex-direction: column;
-  background-color: #111;
+  background-color: #fff;
   position: absolute;
-  top: 100%;
+  top: 60px; /* Adjust based on your navbar height */
   right: 0;
   width: 200px;
-  z-index: 99;
-  border-radius: 0 0 10px 10px;
-  transition: all 0.3s ease-in-out;
+  z-index: 1000;
 }
 
 .category-nav-links.open {
   display: flex;
 }
 
-.category-hamburger {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  z-index: 100;
+@media (min-width: 768px) {
+  .category-nav-links {
+    display: flex;
+    flex-direction: row;
+    position: static;
+    background-color: transparent;
+    width: auto;
+  }
+
+  .category-hamburger {
+    display: none;
+  }
 }
+
 
 .category-hamburger .bar {
   width: 25px;
