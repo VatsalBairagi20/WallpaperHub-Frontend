@@ -167,7 +167,16 @@ const HomePage = () => {
         <p>Developed and maintained by Vatsal Bairagi</p>
         <div className="homepage-contact-info">
           <p>Email: <a href="mailto:support@wallpaperhub.com">support@wallpaperhub.com</a></p>
-          <p>Instagram: <a href="https://instagram.com/wallpaperhub" target="_blank">@wallpaperhub</a></p>
+          <p>
+            Instagram:{" "}
+            <a
+              href="https://instagram.com/wallpaperhub"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              @wallpaperhub
+            </a>
+          </p>
         </div>
       </section>
 
@@ -175,8 +184,8 @@ const HomePage = () => {
       <footer className="homepage-footer">
         <p>© 2025 WallpaperHub. All rights reserved.</p>
         <div className="homepage-social-links">
-          <a href="https://instagram.com" target="_blank">Instagram</a>
-          <a href="https://twitter.com" target="_blank">Twitter</a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">Twitter</a>
         </div>
       </footer>
     </div>
