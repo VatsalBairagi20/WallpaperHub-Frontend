@@ -14,6 +14,9 @@ const CategoryPage = () => {
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
 
+  // Hamburger menu state
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -74,17 +77,39 @@ const CategoryPage = () => {
   const openModal = (wallpaper) => setSelectedWallpaper(wallpaper);
   const closeModal = () => setSelectedWallpaper(null);
 
+  // Toggle hamburger menu
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+
   return (
     <div className="category-page-container">
       {/* Navbar */}
       <nav className="category-navbar">
         <div className="category-logo">WallpaperHub</div>
-        <ul className="category-nav-links">
+
+        {/* Hamburger button */}
+        <button
+          className="category-hamburger"
+          onClick={toggleMenu}
+          aria-label="Toggle menu"
+        >
+          <span className={`bar ${menuOpen ? "open" : ""}`}></span>
+          <span className={`bar ${menuOpen ? "open" : ""}`}></span>
+          <span className={`bar ${menuOpen ? "open" : ""}`}></span>
+        </button>
+
+        {/* Nav links */}
+        <ul className={`category-nav-links ${menuOpen ? "open" : ""}`}>
           <li><a href="/">Home</a></li>
           <li><a href="/categories">Categories</a></li>
           <li><a href="#contact">Contact</a></li>
           <li>
-            <button onClick={() => setShowPinInput(!showPinInput)} className="category-login-btn">
+            <button
+              onClick={() => {
+                setShowPinInput(!showPinInput);
+                setMenuOpen(false); // close menu on click login
+              }}
+              className="category-login-btn"
+            >
               🔐 Login
             </button>
           </li>
@@ -184,7 +209,7 @@ const CategoryPage = () => {
           <p className="category-contact-text">Developed and Maintained by Vatsal Bairagi</p>
           <div className="category-contact-info">
             <p>Email: <a href="mailto:support@wallpaperhub.com">support@wallpaperhub.com</a></p>
-            <p>Instagram: <a href="https://instagram.com/wallpaperhub" target="_blank">@wallpaperhub</a></p>
+            <p>Instagram: <a href="https://instagram.com/wallpaperhub" target="_blank" rel="noreferrer">@wallpaperhub</a></p>
           </div>
           <form className="category-contact-form">
             <input type="text" className="category-input" placeholder="Your Name" required />
@@ -198,8 +223,8 @@ const CategoryPage = () => {
       <footer className="category-footer">
         <p>© 2025 WallpaperHub. Built and maintained with 💪 by <strong>Vatsal Bairagi</strong></p>
         <div className="category-social-links">
-          <a href="https://instagram.com" target="_blank">Instagram</a>
-          <a href="https://github.com/vatsalbairagi" target="_blank">GitHub</a>
+          <a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a>
+          <a href="https://github.com/vatsalbairagi" target="_blank" rel="noreferrer">GitHub</a>
         </div>
       </footer>
     </div>
