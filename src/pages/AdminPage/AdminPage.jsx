@@ -12,7 +12,8 @@ const AdminPage = () => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/get-categories')
+    fetch('https://wallpaperhub-backend.onrender.com
+/api/get-categories')
       .then((res) => res.json())
       .then((data) => {
         setCategories(data.categories || []);
@@ -44,7 +45,8 @@ formData.append('new-category', newCategory);
 
 
     try {
-      const response = await fetch('http://localhost:5000/api/upload-wallpaper', {
+      const response = await fetch('https://wallpaperhub-backend.onrender.com
+/api/upload-wallpaper', {
         method: 'POST',
         body: formData,
         headers: {
@@ -55,7 +57,8 @@ formData.append('new-category', newCategory);
       alert(result.message || 'Wallpaper uploaded successfully');
 
       if (category === 'Create New') {
-        const refresh = await fetch('http://localhost:5000/api/get-categories');
+        const refresh = await fetch('https://wallpaperhub-backend.onrender.com
+/api/get-categories');
         const refreshedData = await refresh.json();
         setCategories(refreshedData.categories || []);
       }
