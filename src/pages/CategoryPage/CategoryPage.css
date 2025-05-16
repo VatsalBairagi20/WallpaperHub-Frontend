@@ -17,75 +17,50 @@ a:hover {
 }
 
 /* ===== Navbar ===== */
-/* === Navbar === */
-.category-navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: rgba(10, 26, 47, 0.9); /* Slightly transparent dark blue */
-  padding: 1rem 2rem;
-  color: white;
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  backdrop-filter: blur(5px); /* Adds a frosted glass effect */
-}
-
-.category-logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  letter-spacing: 1px;
-}
-
 .category-nav-links {
-  list-style: none;
+  display: none;
+  flex-direction: column;
+  background-color: #111;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 200px;
+  z-index: 99;
+  border-radius: 0 0 10px 10px;
+  transition: all 0.3s ease-in-out;
+}
+
+.category-nav-links.open {
   display: flex;
-  gap: 1.5rem;
-}
-
-.category-nav-links li a {
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
-
-.category-nav-links li a:hover {
-  color: #87ceeb; /* Light sky blue for hover effect */
 }
 
 .category-hamburger {
-  display: none;
+  display: flex;
   flex-direction: column;
   gap: 5px;
+  background: transparent;
+  border: none;
   cursor: pointer;
+  z-index: 100;
 }
 
-.category-hamburger span {
+.category-hamburger .bar {
   width: 25px;
   height: 3px;
-  background-color: white;
+  background: #fff;
+  transition: all 0.3s ease;
 }
 
-@media (max-width: 768px) {
-  .category-nav-links {
-    position: absolute;
-    top: 60px;
-    right: 0;
-    flex-direction: column;
-    background: rgba(10, 26, 47, 0.95); /* Match navbar background */
-    padding: 1rem;
-    border-radius: 4px;
-    display: none;
-  }
+.category-hamburger .bar.open:nth-child(1) {
+  transform: rotate(45deg) translateY(8px);
+}
 
-  .category-nav-active {
-    display: flex;
-  }
+.category-hamburger .bar.open:nth-child(2) {
+  opacity: 0;
+}
 
-  .category-hamburger {
-    display: flex;
-  }
+.category-hamburger .bar.open:nth-child(3) {
+  transform: rotate(-45deg) translateY(-8px);
 }
 
 /* ===== PIN Input ===== */
