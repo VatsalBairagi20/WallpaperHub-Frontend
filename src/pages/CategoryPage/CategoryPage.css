@@ -16,80 +16,20 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Prevent input zoom on mobile */
-input, textarea, select, button {
-  font-size: 16px;
-}
-
-/* Prevent double-tap zoom on some browsers */
-html, body {
-  touch-action: manipulation;
-}
-
 /* ===== Navbar ===== */
-.category-nav-links {
-  display: none;
-  flex-direction: column;
-  background-color: #fff;
-  position: absolute;
-  top: 60px;
-  right: 0;
-  width: 200px;
-  z-index: 1000;
-}
-
-.category-nav-links.open {
-  display: flex;
-}
-
-@media (min-width: 768px) {
-  .category-nav-links {
-    display: flex;
-    flex-direction: row;
-    position: static;
-    background-color: transparent;
-    width: auto;
-  }
-
-  .category-hamburger {
-    display: none;
-  }
-}
-
-.category-hamburger .bar {
-  width: 25px;
-  height: 3px;
-  background: #fff;
-  transition: all 0.3s ease;
-}
-
-.category-hamburger .bar.open:nth-child(1) {
-  transform: rotate(45deg) translateY(8px);
-}
-.category-hamburger .bar.open:nth-child(2) {
-  opacity: 0;
-}
-.category-hamburger .bar.open:nth-child(3) {
-  transform: rotate(-45deg) translateY(-8px);
-}
-
 .category-navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(10, 26, 47, 0.9);
   padding: 1rem 2rem;
-  color: white;
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  backdrop-filter: blur(5px);
+  background-color: #081828;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .category-logo {
   font-size: 1.5rem;
   font-weight: bold;
-  letter-spacing: 1px;
+  color: #5db3ff;
 }
 
 .category-nav-links {
@@ -98,28 +38,28 @@ html, body {
   gap: 1.5rem;
 }
 
-.category-nav-links li a {
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s ease;
+.category-nav-item a {
+  font-size: 1rem;
+  color: #e0eafc;
+  transition: color 0.2s;
 }
 
-.category-nav-links li a:hover {
-  color: #87ceeb;
+.category-nav-item a:hover {
+  color: #5db3ff;
 }
 
-.category-hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
+.category-login-btn {
+  background-color: #1d3c61;
+  color: #5db3ff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
-.category-hamburger span {
-  width: 25px;
-  height: 3px;
-  background-color: white;
+.category-login-btn:hover {
+  background-color: #296090;
 }
 
 /* ===== PIN Input ===== */
@@ -128,7 +68,6 @@ html, body {
   display: flex;
   align-items: center;
   gap: 10px;
-  flex-wrap: wrap;
 }
 
 .category-pin-input {
@@ -137,8 +76,6 @@ html, body {
   border: 1px solid #5db3ff;
   background-color: #0e2a45;
   color: #fff;
-  min-width: 140px;
-  flex-grow: 1;
 }
 
 .category-pin-submit-btn {
@@ -147,14 +84,11 @@ html, body {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  white-space: nowrap;
 }
 
 .category-pin-error {
   color: red;
   margin-left: 10px;
-  flex-basis: 100%;
-  font-size: 0.9rem;
 }
 
 /* ===== Hero Section ===== */
@@ -168,7 +102,6 @@ html, body {
   font-size: 3rem;
   color: #5db3ff;
   position: relative;
-  margin: 0;
 }
 
 .category-glitch::after {
@@ -193,7 +126,6 @@ html, body {
 .category-hero-text {
   font-size: 1.1rem;
   color: #b0c8e6;
-  margin-top: 0.5rem;
 }
 
 /* ===== Category Pills ===== */
@@ -203,6 +135,21 @@ html, body {
   gap: 12px;
   padding: 1.5rem 2rem;
   justify-content: center;
+}
+
+.category-pill {
+  background-color: #122c47;
+  color: #e0eafc;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.category-pill:hover,
+.category-pill.active {
+  background-color: #5db3ff;
+  color: #0b1f33;
 }
 
 /* ===== Wallpapers ===== */
@@ -222,7 +169,6 @@ html, body {
   justify-content: center;
   gap: 1rem;
   margin-bottom: 1.5rem;
-  flex-wrap: wrap;
 }
 
 .category-tab-btn {
@@ -233,7 +179,6 @@ html, body {
   border-radius: 5px;
   cursor: pointer;
   transition: 0.3s;
-  white-space: nowrap;
 }
 
 .category-tab-btn.active,
@@ -263,7 +208,6 @@ html, body {
   width: 100%;
   height: auto;
   border-radius: 8px;
-  object-fit: cover;
 }
 
 .landscape .category-wallpaper-image {
@@ -285,7 +229,6 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem;
 }
 
 .category-modal-backdrop {
@@ -299,13 +242,11 @@ html, body {
   background-color: #122c47;
   padding: 2rem;
   z-index: 30;
-  max-width: 900px;
-  max-height: 90vh;
+  max-width: 90%;
+  max-height: 90%;
   overflow-y: auto;
   border-radius: 10px;
   position: relative;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 .category-modal-close {
@@ -377,7 +318,6 @@ html, body {
   border: none;
   background-color: #0e2a45;
   color: #fff;
-  resize: vertical;
 }
 
 .category-submit-btn {
@@ -432,142 +372,4 @@ html, body {
 .category-made-tagline {
   color: #a3bcd9;
   font-size: 0.95rem;
-}
-
-/* ===== Responsive Media Queries ===== */
-
-/* Tablet & small desktops */
-@media (max-width: 1024px) {
-  .category-navbar {
-    padding: 1rem;
-  }
-
-  .category-hero {
-    padding: 3rem 1rem 1rem;
-  }
-
-  .category-hero-content h1 {
-    font-size: 2.4rem;
-  }
-
-  .category-wallpapers-heading {
-    font-size: 1.8rem;
-  }
-
-  .category-wallpapers-gallery {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  }
-
-  .category-modal-content {
-    max-width: 90%;
-    padding: 1.5rem;
-  }
-
-  .category-contact-section {
-    padding: 2rem 1rem;
-  }
-}
-
-/* Phones & small tablets */
-@media (max-width: 600px) {
-  .category-navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-    padding: 1rem;
-  }
-
-  .category-nav-links {
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-  }
-
-  .category-nav-links li {
-    flex: 1 1 45%;
-  }
-
-  .category-login-btn {
-    width: 100%;
-  }
-
-  .category-hero-content h1 {
-    font-size: 2rem;
-  }
-
-  .category-hero-text {
-    font-size: 1rem;
-  }
-
-  .category-strip {
-    justify-content: flex-start;
-    padding: 1rem;
-    gap: 8px;
-  }
-
-  .category-pill {
-    padding: 6px 12px;
-    font-size: 0.9rem;
-  }
-
-  .category-wallpapers {
-    padding: 1rem;
-  }
-
-  .category-wallpapers-heading {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .category-tabs {
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .category-tab-btn {
-    flex: 1 1 45%;
-    padding: 8px 12px;
-    font-size: 0.9rem;
-  }
-
-  .category-wallpapers-gallery {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 0.75rem;
-  }
-
-  .category-modal-content {
-    padding: 1rem;
-    max-width: 95%;
-    max-height: 90vh;
-  }
-
-  .category-contact-section {
-    padding: 2rem 1rem;
-  }
-
-  .category-contact-heading {
-    font-size: 1.3rem;
-  }
-
-  .category-contact-form {
-    max-width: 100%;
-  }
-
-  .category-input,
-  .category-textarea {
-    font-size: 0.9rem;
-  }
-
-  .category-submit-btn {
-    font-size: 1rem;
-  }
-
-  .category-footer {
-    padding: 1rem;
-    font-size: 0.9rem;
-  }
-
-  .category-social-links {
-    gap: 0.7rem;
-  }
 }
