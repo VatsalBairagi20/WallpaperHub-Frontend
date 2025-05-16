@@ -17,124 +17,74 @@ a:hover {
 }
 
 /* ===== Navbar ===== */
-/* ===== Navbar (category-navbar replaces category-navbar) ===== */
+/* === Navbar === */
 .category-navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: rgba(10, 26, 47, 0.9); /* Slightly transparent dark blue */
   padding: 1rem 2rem;
+  color: white;
   position: sticky;
   top: 0;
   z-index: 999;
-  background-color: #0a1a2fe6;
-  color: #fff;
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  backdrop-filter: blur(5px); /* Adds a frosted glass effect */
 }
 
 .category-logo {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #5db3ff;
-  flex-shrink: 0;
+  letter-spacing: 1px;
 }
 
 .category-nav-links {
   list-style: none;
   display: flex;
   gap: 1.5rem;
-  padding: 0;
-  margin: 0;
-  flex-wrap: wrap;
-  justify-content: center;
-  flex: 1 1 auto;
 }
 
-.category-nav-links li {
-  display: flex;
-  align-items: center;
+.category-nav-links li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
 }
 
-.category-nav-item a {
-  font-size: 1rem;
-  color: #e0eafc;
-  transition: color 0.2s;
+.category-nav-links li a:hover {
+  color: #87ceeb; /* Light sky blue for hover effect */
 }
 
-.category-nav-item a:hover {
-  color: #5db3ff;
-}
-
-.category-login-btn {
-  background-color: #1d3c61;
-  color: #5db3ff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
+.category-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
   cursor: pointer;
-  transition: background 0.3s;
-  flex-shrink: 0;
 }
 
-.category-login-btn:hover {
-  background-color: #296090;
+.category-hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: white;
 }
 
-/* ===== Responsive Media Queries for Navbar ===== */
-
-/* Tablet & small desktops */
-@media (max-width: 1024px) {
-  .category-navbar {
-    padding: 1rem;
-  }
-
-  .category-logo {
-    font-size: 1.3rem;
-  }
-
+@media (max-width: 768px) {
   .category-nav-links {
-    gap: 1rem;
-    justify-content: flex-start;
-  }
-
-  .category-nav-item a {
-    font-size: 0.95rem;
-  }
-}
-
-/* Phones & small tablets */
-@media (max-width: 600px) {
-  .category-navbar {
+    position: absolute;
+    top: 60px;
+    right: 0;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
+    background: rgba(10, 26, 47, 0.95); /* Match navbar background */
     padding: 1rem;
+    border-radius: 4px;
+    display: none;
   }
 
-  .category-nav-links {
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-    width: 100%;
+  .category-nav-active {
+    display: flex;
   }
 
-  .category-nav-links li {
-    flex: 1 1 45%;
-  }
-
-  .category-login-btn {
-    width: 100%;
-    padding: 10px;
-  }
-
-  .category-logo {
-    font-size: 1.2rem;
-  }
-
-  .category-nav-item a {
-    font-size: 0.9rem;
+  .category-hamburger {
+    display: flex;
   }
 }
 
