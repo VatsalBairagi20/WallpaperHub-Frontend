@@ -24,18 +24,31 @@ a:hover {
   padding: 1rem 2rem;
   background-color: #081828;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .category-logo {
   font-size: 1.5rem;
   font-weight: bold;
   color: #5db3ff;
+  flex-shrink: 0;
 }
 
 .category-nav-links {
   list-style: none;
   display: flex;
   gap: 1.5rem;
+  padding: 0;
+  margin: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex: 1 1 auto;
+}
+
+.category-nav-links li {
+  display: flex;
+  align-items: center;
 }
 
 .category-nav-item a {
@@ -56,6 +69,7 @@ a:hover {
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.3s;
+  flex-shrink: 0;
 }
 
 .category-login-btn:hover {
@@ -68,6 +82,7 @@ a:hover {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .category-pin-input {
@@ -76,6 +91,8 @@ a:hover {
   border: 1px solid #5db3ff;
   background-color: #0e2a45;
   color: #fff;
+  min-width: 140px;
+  flex-grow: 1;
 }
 
 .category-pin-submit-btn {
@@ -84,11 +101,14 @@ a:hover {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .category-pin-error {
   color: red;
   margin-left: 10px;
+  flex-basis: 100%;
+  font-size: 0.9rem;
 }
 
 /* ===== Hero Section ===== */
@@ -102,6 +122,7 @@ a:hover {
   font-size: 3rem;
   color: #5db3ff;
   position: relative;
+  margin: 0;
 }
 
 .category-glitch::after {
@@ -126,6 +147,7 @@ a:hover {
 .category-hero-text {
   font-size: 1.1rem;
   color: #b0c8e6;
+  margin-top: 0.5rem;
 }
 
 /* ===== Category Pills ===== */
@@ -137,20 +159,7 @@ a:hover {
   justify-content: center;
 }
 
-.category-pill {
-  background-color: #122c47;
-  color: #e0eafc;
-  padding: 8px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.category-pill:hover,
-.category-pill.active {
-  background-color: #5db3ff;
-  color: #0b1f33;
-}
+/* Pills look same, no change */
 
 /* ===== Wallpapers ===== */
 .category-wallpapers {
@@ -169,6 +178,7 @@ a:hover {
   justify-content: center;
   gap: 1rem;
   margin-bottom: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .category-tab-btn {
@@ -179,6 +189,7 @@ a:hover {
   border-radius: 5px;
   cursor: pointer;
   transition: 0.3s;
+  white-space: nowrap;
 }
 
 .category-tab-btn.active,
@@ -208,6 +219,7 @@ a:hover {
   width: 100%;
   height: auto;
   border-radius: 8px;
+  object-fit: cover;
 }
 
 .landscape .category-wallpaper-image {
@@ -229,6 +241,7 @@ a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 1rem;
 }
 
 .category-modal-backdrop {
@@ -242,11 +255,13 @@ a:hover {
   background-color: #122c47;
   padding: 2rem;
   z-index: 30;
-  max-width: 90%;
-  max-height: 90%;
+  max-width: 900px;
+  max-height: 90vh;
   overflow-y: auto;
   border-radius: 10px;
   position: relative;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .category-modal-close {
@@ -318,6 +333,7 @@ a:hover {
   border: none;
   background-color: #0e2a45;
   color: #fff;
+  resize: vertical;
 }
 
 .category-submit-btn {
@@ -372,4 +388,142 @@ a:hover {
 .category-made-tagline {
   color: #a3bcd9;
   font-size: 0.95rem;
+}
+
+/* ===== Responsive Media Queries ===== */
+
+/* Tablet & small desktops */
+@media (max-width: 1024px) {
+  .category-navbar {
+    padding: 1rem;
+  }
+
+  .category-hero {
+    padding: 3rem 1rem 1rem;
+  }
+
+  .category-hero-content h1 {
+    font-size: 2.4rem;
+  }
+
+  .category-wallpapers-heading {
+    font-size: 1.8rem;
+  }
+
+  .category-wallpapers-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .category-modal-content {
+    max-width: 90%;
+    padding: 1.5rem;
+  }
+
+  .category-contact-section {
+    padding: 2rem 1rem;
+  }
+}
+
+/* Phones & small tablets */
+@media (max-width: 600px) {
+  .category-navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+
+  .category-nav-links {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+
+  .category-nav-links li {
+    flex: 1 1 45%;
+  }
+
+  .category-login-btn {
+    width: 100%;
+  }
+
+  .category-hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .category-hero-text {
+    font-size: 1rem;
+  }
+
+  .category-strip {
+    justify-content: flex-start;
+    padding: 1rem;
+    gap: 8px;
+  }
+
+  .category-pill {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+
+  .category-wallpapers {
+    padding: 1rem;
+  }
+
+  .category-wallpapers-heading {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .category-tabs {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .category-tab-btn {
+    flex: 1 1 45%;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  .category-wallpapers-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .category-modal-content {
+    padding: 1rem;
+    max-width: 95%;
+    max-height: 90vh;
+  }
+
+  .category-contact-section {
+    padding: 2rem 1rem;
+  }
+
+  .category-contact-heading {
+    font-size: 1.3rem;
+  }
+
+  .category-contact-form {
+    max-width: 100%;
+  }
+
+  .category-input,
+  .category-textarea {
+    font-size: 0.9rem;
+  }
+
+  .category-submit-btn {
+    font-size: 1rem;
+  }
+
+  .category-footer {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .category-social-links {
+    gap: 0.7rem;
+  }
 }
