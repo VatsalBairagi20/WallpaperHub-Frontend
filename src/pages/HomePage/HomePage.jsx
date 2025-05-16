@@ -9,7 +9,8 @@ const HomePage = () => {
   const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/get-wallpapers")
+    fetch("https://wallpaperhub-backend.onrender.com
+/api/get-wallpapers")
       .then((response) => response.json())
       .then((data) => {
         setWallpapers(data.wallpapers);
@@ -114,7 +115,8 @@ const HomePage = () => {
               onClick={() => openModal(wallpaper)}
             >
               <img
-                src={`http://localhost:5000${wallpaper.thumbnail_url || wallpaper.image_url}`}
+                src={`https://wallpaperhub-backend.onrender.com
+0${wallpaper.thumbnail_url || wallpaper.image_url}`}
                 alt={wallpaper.name}
                 className="homepage-wallpaper-image"
                 loading="lazy"
@@ -133,7 +135,8 @@ const HomePage = () => {
             </button>
             <div className="homepage-modal-image-container">
               <img
-                src={`http://localhost:5000${selectedWallpaper.image_url}`}
+                src={`https://wallpaperhub-backend.onrender.com
+${selectedWallpaper.image_url}`}
                 alt={selectedWallpaper.name}
                 className="homepage-modal-image"
               />
@@ -145,7 +148,7 @@ const HomePage = () => {
               <p><strong>Device:</strong> {selectedWallpaper.device}</p>
               <button
                 className="homepage-download-btn"
-                onClick={() => handleDownload(`http://localhost:5000${selectedWallpaper.image_url}`, selectedWallpaper.name)}
+                onClick={() => handleDownload(`https://wallpaperhub-backend.onrender.com${selectedWallpaper.image_url}`, selectedWallpaper.name)}
                 disabled={isDownloading}
               >
                 {isDownloading ? "Downloading..." : "Download"}
