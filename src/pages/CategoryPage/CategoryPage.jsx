@@ -10,21 +10,18 @@ const CategoryPage = () => {
   const [selectedWallpaper, setSelectedWallpaper] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
-  // PIN login state
   const [showPinInput, setShowPinInput] = useState(false);
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://wallpaperhub-backend.onrender.com
-/api/get-wallpapers")
+    fetch("https://wallpaperhub-backend.onrender.com/api/get-wallpapers")
       .then((response) => response.json())
       .then((data) => setWallpapers(data.wallpapers))
       .catch((error) => console.error("Error fetching wallpapers:", error));
 
-    fetch("https://wallpaperhub-backend.onrender.com
-/api/get-categories")
+    fetch("https://wallpaperhub-backend.onrender.com/api/get-categories")
       .then((response) => response.json())
       .then((data) => setCategories(data.categories))
       .catch((error) => console.error("Error fetching categories:", error));
@@ -134,7 +131,6 @@ const CategoryPage = () => {
             ))}
           </div>
 
-          {/* 🔥 MADE BY VATSAL SECTION */}
           <section className="category-credits">
             <h3 className="category-made-by">💻 Crafted with 💙 by <span>Vatsal Bairagi</span></h3>
             <p className="category-made-tagline">Solo-built project · Design + Code · Maintained by me</p>
@@ -161,8 +157,7 @@ const CategoryPage = () => {
                     onClick={() => openModal(wallpaper)}
                   >
                     <img
-                      src={`https://wallpaperhub-backend.onrender.com
-${wallpaper.thumbnail_url || wallpaper.image_url}`}
+                      src={`https://wallpaperhub-backend.onrender.com${wallpaper.thumbnail_url || wallpaper.image_url}`}
                       alt={wallpaper.name}
                       className="category-wallpaper-image"
                       loading="lazy"
@@ -220,8 +215,7 @@ const WallpaperModal = ({ wallpaper, onClose, onDownload, isDownloading }) => (
       <button className="category-modal-close" onClick={onClose}>✕</button>
       <div className="category-modal-image-container">
         <img
-          src={`https://wallpaperhub-backend.onrender.com
-${wallpaper.image_url}`}
+          src={`https://wallpaperhub-backend.onrender.com${wallpaper.image_url}`}
           alt={wallpaper.name}
           className="category-modal-image"
         />
@@ -233,8 +227,7 @@ ${wallpaper.image_url}`}
         <p className="category-modal-meta"><strong>Device:</strong> {wallpaper.device}</p>
         <button
           className="category-download-btn"
-          onClick={() => onDownload(`https://wallpaperhub-backend.onrender.com
-${wallpaper.image_url}`, wallpaper.name)}
+          onClick={() => onDownload(`https://wallpaperhub-backend.onrender.com${wallpaper.image_url}`, wallpaper.name)}
           disabled={isDownloading}
         >
           {isDownloading ? "Downloading..." : "Download"}
