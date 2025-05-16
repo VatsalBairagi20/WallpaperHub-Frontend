@@ -26,7 +26,7 @@ a:hover {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-.category-logo {
+/* .category-logo {
   font-size: 1.5rem;
   font-weight: bold;
   color: #5db3ff;
@@ -46,7 +46,7 @@ a:hover {
 
 .category-nav-item a:hover {
   color: #5db3ff;
-}
+} */
 
 .category-login-btn {
   background-color: #1d3c61;
