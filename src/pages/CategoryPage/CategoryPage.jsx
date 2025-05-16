@@ -17,12 +17,14 @@ const CategoryPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/get-wallpapers")
+    fetch("https://wallpaperhub-backend.onrender.com
+/api/get-wallpapers")
       .then((response) => response.json())
       .then((data) => setWallpapers(data.wallpapers))
       .catch((error) => console.error("Error fetching wallpapers:", error));
 
-    fetch("http://localhost:5000/api/get-categories")
+    fetch("https://wallpaperhub-backend.onrender.com
+/api/get-categories")
       .then((response) => response.json())
       .then((data) => setCategories(data.categories))
       .catch((error) => console.error("Error fetching categories:", error));
@@ -159,7 +161,8 @@ const CategoryPage = () => {
                     onClick={() => openModal(wallpaper)}
                   >
                     <img
-                      src={`http://localhost:5000${wallpaper.thumbnail_url || wallpaper.image_url}`}
+                      src={`https://wallpaperhub-backend.onrender.com
+${wallpaper.thumbnail_url || wallpaper.image_url}`}
                       alt={wallpaper.name}
                       className="category-wallpaper-image"
                       loading="lazy"
@@ -217,7 +220,8 @@ const WallpaperModal = ({ wallpaper, onClose, onDownload, isDownloading }) => (
       <button className="category-modal-close" onClick={onClose}>✕</button>
       <div className="category-modal-image-container">
         <img
-          src={`http://localhost:5000${wallpaper.image_url}`}
+          src={`https://wallpaperhub-backend.onrender.com
+${wallpaper.image_url}`}
           alt={wallpaper.name}
           className="category-modal-image"
         />
@@ -229,7 +233,8 @@ const WallpaperModal = ({ wallpaper, onClose, onDownload, isDownloading }) => (
         <p className="category-modal-meta"><strong>Device:</strong> {wallpaper.device}</p>
         <button
           className="category-download-btn"
-          onClick={() => onDownload(`http://localhost:5000${wallpaper.image_url}`, wallpaper.name)}
+          onClick={() => onDownload(`https://wallpaperhub-backend.onrender.com
+${wallpaper.image_url}`, wallpaper.name)}
           disabled={isDownloading}
         >
           {isDownloading ? "Downloading..." : "Download"}
