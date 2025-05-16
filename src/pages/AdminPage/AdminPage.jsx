@@ -33,6 +33,11 @@ const AdminPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (category === 'Create New' && newCategory.trim() === '') {
+      alert("Please enter a new category name");
+      return;
+    }
+
     const formData = new FormData();
     formData.append('name', name);
     formData.append('description', description);
@@ -112,6 +117,21 @@ const AdminPage = () => {
 
         <button className="admin-submit-btn" type="submit">Upload Wallpaper</button>
       </form>
+
+      {/* External link section */}
+      <div className="admin-footer-link">
+        <p>
+          Need help? Check out our{' '}
+          <a
+            href="https://wallpaperhub-docs.netlify.app"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Admin Guide
+          </a>
+          .
+        </p>
+      </div>
     </div>
   );
 };
