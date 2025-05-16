@@ -26,6 +26,7 @@ const CategoryPage = () => {
       .then((data) => setCategories(data.categories))
       .catch((error) => console.error("Error fetching categories:", error));
 
+    // Escape key closes modal
     const handleKeyDown = (e) => {
       if (e.key === "Escape") setSelectedWallpaper(null);
     };
@@ -43,11 +44,13 @@ const CategoryPage = () => {
   const openModal = (wallpaper) => setSelectedWallpaper(wallpaper);
   const closeModal = () => setSelectedWallpaper(null);
 
+  // Download with disabling and alert
   const handleDownload = async (url, name) => {
     setIsDownloading(true);
     try {
       const response = await fetch(url);
       if (!response.ok) throw new Error("Network response was not ok");
+
       const blob = await response.blob();
       const blobUrl = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -76,135 +79,52 @@ const CategoryPage = () => {
 
   return (
     <div className="category-page-container">
-      <nav className="category-navbar">
-        <div className="category-logo">WallpaperHub</div>
-        <ul className="category-nav-links">
-          <li className="category-nav-item"><a href="/">Home</a></li>
-          <li className="category-nav-item"><a href="/categories">Categories</a></li>
-          <li className="category-nav-item"><a href="#contact">Contact</a></li>
-          <li className="category-nav-item">
-            <button onClick={() => setShowPinInput(!showPinInput)} className="category-login-btn">
-              🔐 Login
-            </button>
-          </li>
-        </ul>
+      {/* ...rest of your JSX code... */}
 
-        {showPinInput && (
-          <div className="category-pin-container">
-            <input
-              type="password"
-              placeholder="Enter Admin PIN"
-              className="category-pin-input"
-              value={pin}
-              onChange={(e) => setPin(e.target.value)}
-            />
-            <button className="category-pin-submit-btn" onClick={handlePinSubmit}>Submit</button>
-            {error && <p className="category-pin-error">{error}</p>}
-          </div>
-        )}
-      </nav>
-
-      <div className="category-layout">
-        <main className="category-main-content">
-          <section id="hero" className="category-hero">
-            <div className="category-hero-content">
-              <h1 className="category-glitch" data-text="Explore Categories">Explore Categories</h1>
-              <p className="category-hero-text">Discover wallpapers tailored to your style.</p>
-            </div>
-          </section>
-
-          <div className="category-strip">
-            <div
-              className={`category-pill ${selectedCategory === null ? "active" : ""}`}
-              onClick={() => setSelectedCategory(null)}
-            >
-              All
-            </div>
-            {categories.map((cat) => (
-              <div
-                key={cat}
-                className={`category-pill ${selectedCategory === cat ? "active" : ""}`}
-                onClick={() => setSelectedCategory(cat)}
-              >
-                {cat}
-              </div>
-            ))}
-          </div>
-
-          <section className="category-credits">
-            <h3 className="category-made-by">💻 Crafted with 💙 by <span>Vatsal Bairagi</span></h3>
-            <p className="category-made-tagline">Solo-built project · Design + Code · Maintained by me</p>
-          </section>
-
-          <section className="category-wallpapers">
-            <h2 className="category-wallpapers-heading">{selectedCategory || "All"} Wallpapers</h2>
-            <div className="category-tabs">
-              <button
-                className={`category-tab-btn ${activeTab === "pc" ? "active" : ""}`}
-                onClick={() => setActiveTab("pc")}
-              >PC Wallpapers</button>
-              <button
-                className={`category-tab-btn ${activeTab === "mobile" ? "active" : ""}`}
-                onClick={() => setActiveTab("mobile")}
-              >Mobile Wallpapers</button>
-            </div>
-            <div className="category-wallpapers-gallery">
-              {(activeTab === "pc" ? pcWallpapers : mobileWallpapers).length > 0 ? (
-                (activeTab === "pc" ? pcWallpapers : mobileWallpapers).map((wallpaper) => (
-                  <div
-                    key={wallpaper._id}
-                    className={`category-wallpaper-card ${activeTab === "pc" ? "landscape" : "portrait"}`}
-                    onClick={() => openModal(wallpaper)}
-                  >
-                    <img
-                      src={`https://wallpaperhub-backend.onrender.com${wallpaper.thumbnail_url || wallpaper.image_url}`}
-                      alt={wallpaper.name}
-                      className="category-wallpaper-image"
-                      loading="lazy"
-                    />
-                  </div>
-                ))
-              ) : (
-                <p className="category-no-wallpapers">No {activeTab === "pc" ? "PC" : "Mobile"} wallpapers available in this category.</p>
-              )}
-            </div>
-          </section>
-
-          {selectedWallpaper && (
-            <WallpaperModal
-              wallpaper={selectedWallpaper}
-              onClose={closeModal}
-              onDownload={handleDownload}
-              isDownloading={isDownloading}
-            />
-          )}
-
-          <section id="contact" className="category-contact-section">
-            <h2 className="category-contact-heading">Contact Us</h2>
-            <p className="category-contact-text">Developed and Maintained by Vatsal Bairagi</p>
-            <div className="category-contact-info">
-              <p className="category-contact-email">Email: <a href="mailto:support@wallpaperhub.com">support@wallpaperhub.com</a></p>
-              <p className="category-contact-instagram">Instagram: <a href="https://instagram.com/wallpaperhub" target="_blank">@wallpaperhub</a></p>
-            </div>
-            <form className="category-contact-form">
-              <input type="text" className="category-input" placeholder="Your Name" required />
-              <input type="email" className="category-input" placeholder="Your Email" required />
-              <textarea className="category-textarea" placeholder="Your Message" required></textarea>
-              <button type="button" className="category-submit-btn">Send Message</button>
-            </form>
-          </section>
-        </main>
-      </div>
-
-      <footer className="category-footer">
-        <p className="category-footer-text">
-          © 2025 WallpaperHub. Built and maintained with 💪 by <strong>Vatsal Bairagi</strong>
-        </p>
-        <div className="category-social-links">
-          <a className="category-social-link" href="https://instagram.com" target="_blank">Instagram</a>
-          <a className="category-social-link" href="https://github.com/vatsalbairagi" target="_blank">GitHub</a>
+      <section className="category-wallpapers">
+        <h2 className="category-wallpapers-heading">{selectedCategory || "All"} Wallpapers</h2>
+        <div className="category-tabs">
+          <button
+            className={`category-tab-btn ${activeTab === "pc" ? "active" : ""}`}
+            onClick={() => setActiveTab("pc")}
+          >PC Wallpapers</button>
+          <button
+            className={`category-tab-btn ${activeTab === "mobile" ? "active" : ""}`}
+            onClick={() => setActiveTab("mobile")}
+          >Mobile Wallpapers</button>
         </div>
-      </footer>
+        <div className="category-wallpapers-gallery">
+          {(activeTab === "pc" ? pcWallpapers : mobileWallpapers).length > 0 ? (
+            (activeTab === "pc" ? pcWallpapers : mobileWallpapers).map((wallpaper) => (
+              <div
+                key={wallpaper._id}
+                className={`category-wallpaper-card ${activeTab === "pc" ? "landscape" : "portrait"}`}
+                onClick={() => openModal(wallpaper)}
+              >
+                <img
+                  src={`https://wallpaperhub-backend.onrender.com${wallpaper.thumbnail_url || wallpaper.image_url}`}
+                  alt={wallpaper.name}
+                  className="category-wallpaper-image"
+                  loading="lazy"
+                />
+              </div>
+            ))
+          ) : (
+            <p className="category-no-wallpapers">No {activeTab === "pc" ? "PC" : "Mobile"} wallpapers available in this category.</p>
+          )}
+        </div>
+      </section>
+
+      {selectedWallpaper && (
+        <WallpaperModal
+          wallpaper={selectedWallpaper}
+          onClose={closeModal}
+          onDownload={handleDownload}
+          isDownloading={isDownloading}
+        />
+      )}
+
+      {/* ...rest of your JSX code... */}
     </div>
   );
 };
