@@ -1,376 +1,179 @@
-/* === Global Container === */
-.homepage-container {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #fff; /* Changed to white for better contrast on dark background */
-  background: linear-gradient(135deg, #0a1a2f 0%, #1b3a5b 100%); /* Dark blue gradient for underwater feel */
-  position: relative;
-  overflow-x: hidden;
-}
-
-/* Subtle underwater motion effect in the background */
-.homepage-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('https://example.com/subtle-bubbles.png') repeat; /* Replace with a subtle bubble texture or light rays */
-  opacity: 0.1; /* Very faint to avoid distraction */
-  animation: moveBubbles 20s linear infinite; /* Subtle motion */
-  pointer-events: none; /* Ensures it doesn't interfere with interactions */
-}
-
-@keyframes moveBubbles {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 100% 100%;
-  }
-}
-
-/* === Navbar === */
-.homepage-navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: rgba(10, 26, 47, 0.9); /* Slightly transparent dark blue */
-  padding: 1rem 2rem;
+/* === Base Reset === */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   color: white;
+}
+
+/* === Glassmorphism === */
+.glassy {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* === Header === */
+.home-header {
+  text-align: center;
+  padding: 2rem 1rem;
   position: sticky;
   top: 0;
-  z-index: 999;
-  backdrop-filter: blur(5px); /* Adds a frosted glass effect */
+  z-index: 10;
 }
 
-.homepage-logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  letter-spacing: 1px;
-}
-
-.homepage-nav-links {
-  list-style: none;
-  display: flex;
-  gap: 1.5rem;
-}
-
-.homepage-nav-links li a {
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
-
-.homepage-nav-links li a:hover {
-  color: #87ceeb; /* Light sky blue for hover effect */
-}
-
-.homepage-hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-}
-
-.homepage-hamburger span {
-  width: 25px;
-  height: 3px;
-  background-color: white;
-}
-
-@media (max-width: 768px) {
-  .homepage-nav-links {
-    position: absolute;
-    top: 60px;
-    right: 0;
-    flex-direction: column;
-    background: rgba(10, 26, 47, 0.95); /* Match navbar background */
-    padding: 1rem;
-    border-radius: 4px;
-    display: none;
-  }
-
-  .homepage-nav-active {
-    display: flex;
-  }
-
-  .homepage-hamburger {
-    display: flex;
-  }
-}
-
-/* === Hero Section === */
-.homepage-hero {
-  position: relative;
-  background: url('Image.gif') center/cover no-repeat;
-  height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  text-align: center;
-}
-
-.homepage-hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background: linear-gradient(rgba(10, 26, 47, 0.7), rgba(27, 58, 91, 0.7)); /* Gradient overlay for depth */
-  z-index: 1;
-}
-
-.homepage-hero-content {
-  position: relative;
-  z-index: 2;
-}
-
-.homepage-hero-content h1 {
-  font-size: 3.5rem; /* Slightly larger for impact */
-  margin-bottom: 1rem;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5); /* Adds depth to text */
-}
-
-.homepage-hero-content p {
-  font-size: 1.3rem; /* Slightly larger for readability */
-  margin-bottom: 2rem;
-  opacity: 0.9;
-}
-
-.homepage-cta-button {
-  padding: 0.75rem 1.5rem;
-  background-color: #87ceeb; /* Light sky blue for contrast */
-  color: #0a1a2f; /* Dark blue text */
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  text-decoration: none;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.homepage-cta-button:hover {
-  background-color: #b0e0e6; /* Lighter blue on hover */
-  transform: scale(1.05); /* Subtle scale effect */
-}
-
-/* === Wallpapers Section === */
-.homepage-wallpapers {
-  padding: 4rem 2rem;
-  background: transparent; /* Transparent to show the global background */
-  text-align: center;
-}
-
-.homepage-wallpapers h2 {
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
-  color: #fff;
-  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
-}
-
-/* === Tabs === */
-.homepage-tabs {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
-.homepage-tabs button {
-  padding: 0.5rem 1rem;
-  background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: 500;
-  color: white;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.homepage-tab-active {
-  background-color: #87ceeb; /* Light sky blue for active tab */
-  color: #0a1a2f; /* Dark blue text */
-}
-
-.homepage-tabs button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  transform: scale(1.03);
-}
-
-/* === Gallery === */
-.homepage-wallpapers-gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1.5rem;
-}
-
-.homepage-wallpaper-card {
-  background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white for cards */
-  border-radius: 8px;
+.home-header h1.typewriter {
+  font-size: 2rem;
+  background: linear-gradient(90deg, #00ffe7, #3dff65);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: type 3s steps(30, end) infinite;
+  white-space: nowrap;
   overflow: hidden;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-right: 2px solid rgba(255,255,255,0.75);
+  max-width: 100%;
+}
+
+@keyframes type {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* === Tab Buttons === */
+.tab-buttons {
+  margin-top: 1rem;
+}
+
+.tab-buttons button {
+  margin: 0 0.5rem;
+  padding: 0.6rem 1.5rem;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255,255,255,0.15);
+  color: white;
   cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
 }
 
-.homepage-wallpaper-card:hover {
-  transform: scale(1.05); /* Slightly larger scale for hover */
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+.tab-buttons button.active,
+.tab-buttons button:hover {
+  background: rgba(255,255,255,0.4);
+  color: #000;
 }
 
-.homepage-wallpaper-image {
+/* === Skeleton Loaders === */
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 2rem;
+}
+
+.skeleton-card {
+  height: 250px;
+  background: #2e3d4d;
+  border-radius: 15px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* === Wallpaper Grid === */
+.wallpaper-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 2rem;
+}
+
+.wallpaper-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.wallpaper-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.wallpaper-card img {
   width: 100%;
-  height: 140px;
+  height: 100%;
   object-fit: cover;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.2); /* Subtle border for separation */
+  display: block;
 }
 
-.homepage-wallpaper-details {
-  padding: 1rem;
-  text-align: left;
+.overlay-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.5);
   color: #fff;
+  font-size: 0.85rem;
+  text-transform: capitalize;
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* === Modal === */
-.homepage-modal {
+.modal {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 999;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.6);
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.homepage-modal-backdrop {
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.8); /* Darker backdrop for focus */
-  width: 100%;
-  height: 100%;
-}
-
-.homepage-modal-content {
-  background-color: rgba(10, 26, 47, 0.95); /* Match the dark theme */
-  padding: 2rem;
-  border-radius: 8px;
-  max-width: 90%;
-  max-height: 90%;
-  overflow-y: auto;
-  position: relative;
   z-index: 1000;
-  color: #fff;
 }
 
-.homepage-modal-image {
-  width: 100%;
-  max-height: 60vh;
-  object-fit: contain;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.homepage-modal-close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: 2rem;
-  background: none;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-}
-
-.homepage-download-btn {
-  margin-top: 1rem;
-  display: inline-block;
-  background-color: #87ceeb; /* Light sky blue */
-  color: #0a1a2f; /* Dark blue text */
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  text-decoration: none;
-  transition: background-color 0.3s ease;
-}
-
-.homepage-download-btn:hover {
-  background-color: #b0e0e6;
-}
-
-/* === Contact Section === */
-.homepage-contact-section {
-  padding: 4rem 2rem;
-  background: transparent; /* Transparent to show the global background */
-  text-align: center;
-}
-
-.homepage-contact-info a {
-  color: #87ceeb; /* Light sky blue for links */
-  text-decoration: none;
-}
-
-.homepage-contact-info a:hover {
-  color: #b0e0e6;
-}
-
-.homepage-contact-form {
-  max-width: 500px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.homepage-contact-form input,
-.homepage-contact-form textarea {
-  padding: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #fff;
-}
-
-.homepage-contact-form input::placeholder,
-.homepage-contact-form textarea::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.homepage-submit-btn {
-  background-color: #87ceeb; /* Light sky blue */
-  color: #0a1a2f; /* Dark blue text */
-  padding: 0.75rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.homepage-submit-btn:hover {
-  background-color: #b0e0e6;
-}
-
-/* === Footer === */
-.homepage-footer {
-  background-color: rgba(10, 26, 47, 0.9); /* Match navbar */
-  color: white;
+.modal-content {
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: auto;
+  border-radius: 20px;
+  background: #111;
   padding: 1rem;
   text-align: center;
 }
 
-.homepage-social-links {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 0.5rem;
+.modal-content img {
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
 }
 
-.homepage-social-links a {
-  color: white;
+.download-btn {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.7rem 1.5rem;
+  background: #00ffd5;
+  color: #000;
+  border-radius: 10px;
   text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
 }
 
-.homepage-social-links a:hover {
-  color: #87ceeb; /* Light sky blue on hover */
+.download-btn:hover {
+  background: #00ffae;
 }
