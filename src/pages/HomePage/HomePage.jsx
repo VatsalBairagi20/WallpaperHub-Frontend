@@ -39,6 +39,12 @@ const HomePage = () => {
     setSelectedWallpaper(null);
   };
 
+  // Helper to fix URLs whether local or from Pixabay (full URL or relative path)
+  const getImageUrl = (imageUrl) =>
+    imageUrl.startsWith("http")
+      ? imageUrl
+      : `https://wallpaperhub-backend.onrender.com${imageUrl}`;
+
   const handleDownload = async (url, name) => {
     setIsDownloading(true);
     try {
@@ -115,7 +121,7 @@ const HomePage = () => {
               onClick={() => openModal(wallpaper)}
             >
               <img
-                src={`https://wallpaperhub-backend.onrender.com${wallpaper.thumbnail_url || wallpaper.image_url}`}
+                src={getImageUrl(wallpaper.thumbnail_url || wallpaper.image_url)}
                 alt={wallpaper.name}
                 className="homepage-wallpaper-image"
                 loading="lazy"
@@ -134,7 +140,7 @@ const HomePage = () => {
             </button>
             <div className="homepage-modal-image-container">
               <img
-                src={`https://wallpaperhub-backend.onrender.com${selectedWallpaper.image_url}`}
+                src={getImageUrl(selectedWallpaper.image_url)}
                 alt={selectedWallpaper.name}
                 className="homepage-modal-image"
               />
@@ -147,10 +153,7 @@ const HomePage = () => {
               <button
                 className="homepage-download-btn"
                 onClick={() =>
-                  handleDownload(
-                    `https://wallpaperhub-backend.onrender.com${selectedWallpaper.image_url}`,
-                    selectedWallpaper.name
-                  )
+                  handleDownload(getImageUrl(selectedWallpaper.image_url), selectedWallpaper.name)
                 }
                 disabled={isDownloading}
               >
