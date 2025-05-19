@@ -9,12 +9,9 @@ const CategoryPage = () => {
   const [activeTab, setActiveTab] = useState("pc");
   const [selectedWallpaper, setSelectedWallpaper] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
-
   const [showPinInput, setShowPinInput] = useState(false);
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
-
-  // Hamburger menu state
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -76,42 +73,33 @@ const CategoryPage = () => {
 
   const openModal = (wallpaper) => setSelectedWallpaper(wallpaper);
   const closeModal = () => setSelectedWallpaper(null);
-
-  // Toggle hamburger menu
   const toggleMenu = () => setMenuOpen(!menuOpen);
+
+  const getImageUrl = (imageUrl) =>
+    imageUrl.startsWith("http")
+      ? imageUrl
+      : `https://wallpaperhub-backend.onrender.com${imageUrl}`;
 
   return (
     <div className="category-page-container">
-      {/* Navbar */}
       <nav className="category-navbar">
         <div className="category-logo">WallpaperHub</div>
 
-        {/* Hamburger button */}
-        <button
-          className="category-hamburger"
-          onClick={toggleMenu}
-          aria-label="Toggle menu"
-        >
+        <button className="category-hamburger" onClick={toggleMenu} aria-label="Toggle menu">
           <span className={`bar ${menuOpen ? "open" : ""}`}></span>
           <span className={`bar ${menuOpen ? "open" : ""}`}></span>
           <span className={`bar ${menuOpen ? "open" : ""}`}></span>
         </button>
 
-        {/* Nav links */}
         <ul className={`category-nav-links ${menuOpen ? "open" : ""}`}>
           <li><a href="/">Home</a></li>
           <li><a href="/categories">Categories</a></li>
           <li><a href="#contact">Contact</a></li>
           <li>
-            <button
-              onClick={() => {
-                setShowPinInput(!showPinInput);
-                setMenuOpen(false); // close menu on click login
-              }}
-              className="category-login-btn"
-            >
-              🔐 Login
-            </button>
+            <button onClick={() => {
+              setShowPinInput(!showPinInput);
+              setMenuOpen(false);
+            }} className="category-login-btn">🔐 Login</button>
           </li>
         </ul>
 
@@ -182,7 +170,7 @@ const CategoryPage = () => {
                   onClick={() => openModal(wallpaper)}
                 >
                   <img
-                    src={`https://wallpaperhub-backend.onrender.com${wallpaper.thumbnail_url || wallpaper.image_url}`}
+                    src={getImageUrl(wallpaper.thumbnail_url || wallpaper.image_url)}
                     alt={wallpaper.name}
                     className="category-wallpaper-image"
                     loading="lazy"
@@ -201,6 +189,7 @@ const CategoryPage = () => {
             onClose={closeModal}
             onDownload={handleDownload}
             isDownloading={isDownloading}
+            getImageUrl={getImageUrl}
           />
         )}
 
@@ -231,13 +220,13 @@ const CategoryPage = () => {
   );
 };
 
-const WallpaperModal = ({ wallpaper, onClose, onDownload, isDownloading }) => (
+const WallpaperModal = ({ wallpaper, onClose, onDownload, isDownloading, getImageUrl }) => (
   <div className="category-modal">
     <div className="category-modal-content">
       <button className="category-modal-close" onClick={onClose}>✕</button>
       <div className="category-modal-image-container">
         <img
-          src={`https://wallpaperhub-backend.onrender.com${wallpaper.image_url}`}
+          src={getImageUrl(wallpaper.image_url)}
           alt={wallpaper.name}
           className="category-modal-image"
         />
@@ -248,7 +237,7 @@ const WallpaperModal = ({ wallpaper, onClose, onDownload, isDownloading }) => (
         <p><strong>Category:</strong> {wallpaper.category}</p>
         <p><strong>Device:</strong> {wallpaper.device}</p>
         <button
-          onClick={() => onDownload(`https://wallpaperhub-backend.onrender.com${wallpaper.image_url}`, wallpaper.name)}
+          onClick={() => onDownload(getImageUrl(wallpaper.image_url), wallpaper.name)}
           disabled={isDownloading}
           className="category-download-btn"
         >
