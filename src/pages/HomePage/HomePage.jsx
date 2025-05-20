@@ -7,16 +7,11 @@ const HomePage = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [selectedWallpaper, setSelectedWallpaper] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [fetching, setFetching] = useState(false);
 
+  // Initial load
   useEffect(() => {
-    fetch("https://wallpaperhub-backend.onrender.com/api/get-wallpapers")
-      .then((response) => response.json())
-      .then((data) => {
-        setWallpapers(data.wallpapers);
-      })
-      .catch((error) => {
-        console.error("Error fetching wallpapers:", error);
-      });
+    fetchWallpapersFromDB();
 
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
@@ -28,8 +23,19 @@ const HomePage = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  const pcWallpapers = wallpapers.filter((wp) => wp.device === "pc");
-  const mobileWallpapers = wallpapers.filter((wp) => wp.device === "mobile");
+  const fetchWallpapersFromDB = () => {
+    fetch("https://wallpaperhub-backend.onrender.com/api/get-wallpapers")
+      .then((response) => response.json())
+      .then((data) => {
+        setWallpapers(data.wallpapers);
+      })
+      .catch((error) => {
+        console.error("Error fetching wallpapers:", error);
+      });
+  };
+
+  const pcWallpapers = wallpapers.filter((wp) => wp.device.toLowerCase() === "pc");
+  const mobileWallpapers = wallpapers.filter((wp) => wp.device.toLowerCase() === "mobile");
 
   const openModal = (wallpaper) => {
     setSelectedWallpaper(wallpaper);
@@ -39,7 +45,6 @@ const HomePage = () => {
     setSelectedWallpaper(null);
   };
 
-  // Helper to fix URLs whether local or from Pixabay (full URL or relative path)
   const getImageUrl = (imageUrl) =>
     imageUrl.startsWith("http")
       ? imageUrl
@@ -66,6 +71,41 @@ const HomePage = () => {
       alert("Failed to download the wallpaper. Please try again.");
     } finally {
       setIsDownloading(false);
+    }
+  };
+
+  const autoFetchFromPixabay = async () => {
+    const query = prompt("Enter category/query for wallpapers:");
+    const device = prompt("Enter device type (PC or Mobile):", "PC");
+
+    if (!query || !device) {
+      alert("Both category and device type are required.");
+      return;
+    }
+
+    try {
+      setFetching(true);
+      const res = await fetch("https://wallpaperhub-backend.onrender.com/api/fetch-wallpapers", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ query, device }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert(data.message || "Wallpapers fetched successfully.");
+        fetchWallpapersFromDB(); // Refresh list
+      } else {
+        alert(data.error || "Failed to fetch wallpapers.");
+      }
+    } catch (error) {
+      console.error("Pixabay fetch error:", error);
+      alert("Something went wrong while fetching from Pixabay.");
+    } finally {
+      setFetching(false);
     }
   };
 
@@ -113,6 +153,17 @@ const HomePage = () => {
             Mobile Wallpapers
           </button>
         </div>
+
+        <div className="homepage-fetch-btn-wrapper">
+          <button
+            className="homepage-fetch-btn"
+            onClick={autoFetchFromPixabay}
+            disabled={fetching}
+          >
+            {fetching ? "Fetching..." : "Fetch from Pixabay"}
+          </button>
+        </div>
+
         <div className="homepage-wallpapers-gallery">
           {(activeTab === "pc" ? pcWallpapers : mobileWallpapers).map((wallpaper) => (
             <div
