@@ -9,36 +9,26 @@ const HomePage = () => {
   const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
-    // Load wallpapers from backend
     fetch("https://wallpaperhub-backend.onrender.com/api/get-wallpapers")
-      .then((response) => response.json())
+      .then((res) => res.json())
       .then((data) => {
         setWallpapers(data.wallpapers);
       })
-      .catch((error) => {
-        console.error("Error fetching wallpapers:", error);
-      });
+      .catch((err) => console.error("Error fetching wallpapers:", err));
 
     const handleKeyDown = (e) => {
-      if (e.key === "Escape") {
-        setSelectedWallpaper(null);
-      }
+      if (e.key === "Escape") closeModal();
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  const pcWallpapers = wallpapers.filter((wp) => wp.device === "pc");
-  const mobileWallpapers = wallpapers.filter((wp) => wp.device === "mobile");
+  const pcWallpapers = wallpapers.filter((wp) => wp.device.toLowerCase() === "pc");
+  const mobileWallpapers = wallpapers.filter((wp) => wp.device.toLowerCase() === "mobile");
 
-  const openModal = (wallpaper) => {
-    setSelectedWallpaper(wallpaper);
-  };
-
-  const closeModal = () => {
-    setSelectedWallpaper(null);
-  };
+  const openModal = (wallpaper) => setSelectedWallpaper(wallpaper);
+  const closeModal = () => setSelectedWallpaper(null);
 
   const getImageUrl = (imageUrl) =>
     imageUrl.startsWith("http")
@@ -49,7 +39,7 @@ const HomePage = () => {
     setIsDownloading(true);
     try {
       const response = await fetch(url);
-      if (!response.ok) throw new Error("Network response was not ok");
+      if (!response.ok) throw new Error("Download failed");
 
       const blob = await response.blob();
       const blobUrl = window.URL.createObjectURL(blob);
@@ -60,10 +50,10 @@ const HomePage = () => {
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(blobUrl);
-      alert("Download started successfully!");
-    } catch (error) {
-      console.error("Error downloading the wallpaper:", error);
-      alert("Failed to download the wallpaper. Please try again.");
+      alert("Download started!");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to download wallpaper.");
     } finally {
       setIsDownloading(false);
     }
@@ -80,9 +70,7 @@ const HomePage = () => {
           <li><a href="#contact">Contact</a></li>
         </ul>
         <div className="homepage-hamburger" onClick={() => setIsNavOpen(!isNavOpen)}>
-          <span></span>
-          <span></span>
-          <span></span>
+          <span></span><span></span><span></span>
         </div>
       </nav>
 
@@ -91,7 +79,7 @@ const HomePage = () => {
         <div className="homepage-hero-overlay"></div>
         <div className="homepage-hero-content">
           <h1>Discover Epic Wallpapers</h1>
-          <p>Elevate your device with our curated collection of stunning visuals.</p>
+          <p>Elevate your device with stunning visuals from our collection.</p>
           <a href="#wallpapers" className="homepage-cta-button">Explore Now</a>
         </div>
       </section>
@@ -116,7 +104,9 @@ const HomePage = () => {
         <div className="homepage-wallpapers-gallery">
           {(activeTab === "pc" ? pcWallpapers : mobileWallpapers).map((wallpaper) => (
             <div
-              className={`homepage-wallpaper-card ${activeTab === "pc" ? "homepage-landscape" : "homepage-portrait"}`}
+              className={`homepage-wallpaper-card ${
+                activeTab === "pc" ? "homepage-landscape" : "homepage-portrait"
+              }`}
               key={wallpaper._id}
               onClick={() => openModal(wallpaper)}
             >
@@ -135,9 +125,7 @@ const HomePage = () => {
       {selectedWallpaper && (
         <div className="homepage-modal">
           <div className="homepage-modal-content">
-            <button className="homepage-modal-close" onClick={closeModal} aria-label="Close modal">
-              ✕
-            </button>
+            <button className="homepage-modal-close" onClick={closeModal}>✕</button>
             <div className="homepage-modal-image-container">
               <img
                 src={getImageUrl(selectedWallpaper.image_url)}
@@ -170,16 +158,7 @@ const HomePage = () => {
         <p>Developed and maintained by Vatsal Bairagi</p>
         <div className="homepage-contact-info">
           <p>Email: <a href="mailto:support@wallpaperhub.com">support@wallpaperhub.com</a></p>
-          <p>
-            Instagram:{" "}
-            <a
-              href="https://instagram.com/wallpaperhub"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              @wallpaperhub
-            </a>
-          </p>
+          <p>Instagram: <a href="https://instagram.com/wallpaperhub" target="_blank" rel="noopener noreferrer">@wallpaperhub</a></p>
         </div>
       </section>
 
