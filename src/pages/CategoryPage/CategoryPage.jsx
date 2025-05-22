@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CategoryPage.css";
 
+const PIXABAY_API_KEY = "47849701-73acc40f5327790e47c2f6a81"; // Replace this with your real API key
+
 const CategoryPage = () => {
   const [wallpapers, setWallpapers] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -17,15 +19,31 @@ const CategoryPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`https://wallpaperhub-backend.onrender.com/api/get-wallpapers`)
-      .then((res) => res.json())
-      .then((data) => setWallpapers(data.wallpapers))
-      .catch((err) => console.error("Error loading wallpapers:", err));
+    const fetchWallpapers = async () => {
+      try {
+        const res = await fetch(
+          `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=wallpapers&image_type=photo&per_page=100`
+        );
+        const data = await res.json();
 
-    fetch(`https://wallpaperhub-backend.onrender.com/api/get-categories`)
-      .then((res) => res.json())
-      .then((data) => setCategories(data.categories))
-      .catch((err) => console.error("Error loading categories:", err));
+        const transformed = data.hits.map((img) => ({
+          _id: img.id,
+          name: img.tags,
+          description: `Photo by ${img.user}`,
+          category: "Pixabay",
+          device: img.imageWidth > img.imageHeight ? "pc" : "mobile",
+          image_url: img.largeImageURL,
+          thumbnail_url: img.previewURL,
+        }));
+
+        setWallpapers(transformed);
+        setCategories(["Pixabay"]);
+      } catch (error) {
+        console.error("Failed to fetch from Pixabay:", error);
+      }
+    };
+
+    fetchWallpapers();
 
     const handleEsc = (e) => {
       if (e.key === "Escape") setSelectedWallpaper(null);
@@ -75,10 +93,7 @@ const CategoryPage = () => {
   const closeModal = () => setSelectedWallpaper(null);
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
-  const getImageUrl = (imageUrl) =>
-    imageUrl.startsWith("http")
-      ? imageUrl
-      : `https://wallpaperhub-backend.onrender.com${imageUrl}`;
+  const getImageUrl = (imageUrl) => imageUrl;
 
   return (
     <div className="category-page-container">
