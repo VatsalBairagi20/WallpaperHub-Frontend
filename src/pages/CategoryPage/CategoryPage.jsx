@@ -27,36 +27,38 @@ const CategoryPage = () => {
         const categoryRes = await fetch(`https://wallpaperhub-backend.onrender.com/api/get-categories`);
         const categoryData = await categoryRes.json();
 
-        // Fetch from Waifu.pics API for Anime Wallpapers (with more wallpapers for different anime)
-        const waifuRes = await fetch("https://api.waifu.pics/sfw/waifu");
-        const waifuData = await waifuRes.json();
-
-        // Assuming you have categories and some logic to categorize wallpapers, like:
-        // "Naruto", "Jujutsu Kaisen", etc.
+        // Fetch bulk anime wallpapers - Assuming the API supports bulk fetching wallpapers
         const animeCategories = [
           { name: "Naruto", url: "https://example.com/naruto_wallpapers" },
           { name: "Jujutsu Kaisen", url: "https://example.com/jujutsu_wallpapers" }
         ];
 
-        // Fetch wallpapers for specific anime categories
-        const animeWallpapers = [];
-        for (let category of animeCategories) {
-          const categoryRes = await fetch(category.url);
+        // Assuming each category URL provides a list of wallpapers
+        const fetchCategoryWallpapers = async (categoryUrl) => {
+          const categoryRes = await fetch(categoryUrl);
           const categoryWallpapers = await categoryRes.json();
-          categoryWallpapers.forEach((wp) => {
-            animeWallpapers.push({
-              ...wp,
-              category: category.name,
-            });
-          });
-        }
+          return categoryWallpapers; // This will return an array of wallpapers for that category
+        };
 
-        // Combine all data: backend, waifu, and anime-specific categories
-        const combinedWallpapers = [...backendData.wallpapers, ...animeWallpapers];
+        // Fetch all wallpapers for each anime category
+        const animeWallpapersPromises = animeCategories.map(async (category) => {
+          const wallpapers = await fetchCategoryWallpapers(category.url);
+          return wallpapers.map((wp) => ({
+            ...wp,
+            category: category.name,
+          }));
+        });
+
+        // Wait for all category wallpapers to be fetched
+        const allAnimeWallpapers = await Promise.all(animeWallpapersPromises);
+        const combinedWallpapers = [...backendData.wallpapers, ...allAnimeWallpapers.flat()];
+
+        // Combine all categories into a unique list
         const combinedCategories = [
-          ...new Set([...categoryData.categories, "Anime", ...animeCategories.map((cat) => cat.name)]),
+          ...new Set([...categoryData.categories, ...animeCategories.map((cat) => cat.name)]),
         ];
 
+        // Set wallpapers and categories in the state
         setWallpapers(combinedWallpapers);
         setCategories(combinedCategories);
       } catch (error) {
