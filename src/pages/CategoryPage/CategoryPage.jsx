@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CategoryPage.css";
 
-const PIXABAY_API_KEY = "47849701-73acc40f5327790e47c2f6a81"; // Replace with your key
-
 const CategoryPage = () => {
   const [wallpapers, setWallpapers] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -21,33 +19,30 @@ const CategoryPage = () => {
   useEffect(() => {
     const fetchAllData = async () => {
       try {
-        // Fetch your backend wallpapers
+        // Fetch backend wallpapers
         const backendRes = await fetch(`https://wallpaperhub-backend.onrender.com/api/get-wallpapers`);
         const backendData = await backendRes.json();
 
-        // Fetch your backend categories
+        // Fetch backend categories
         const categoryRes = await fetch(`https://wallpaperhub-backend.onrender.com/api/get-categories`);
         const categoryData = await categoryRes.json();
 
-        // Fetch from Pixabay
-        const pixabayRes = await fetch(
-          `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=wallpapers&image_type=photo&per_page=50`
-        );
-        const pixabayData = await pixabayRes.json();
+        // Fetch from Nekos API
+        const nekosRes = await fetch("https://nekosapi.com/api/v3/images/random?limit=20");
+        const nekosData = await nekosRes.json();
 
-        const pixabayWallpapers = pixabayData.hits.map((img) => ({
-          _id: `pixabay-${img.id}`,
-          name: img.tags,
-          description: `Photo by ${img.user}`,
-          category: "Pixabay",
-          device: img.imageWidth > img.imageHeight ? "pc" : "mobile",
-          image_url: img.largeImageURL,
-          thumbnail_url: img.previewURL,
+        const nekosWallpapers = nekosData.items.map((img, index) => ({
+          _id: `nekos-${index}`,
+          name: "Anime Wallpaper",
+          description: "Sourced from Nekos API",
+          category: "Anime",
+          device: img.width > img.height ? "pc" : "mobile",
+          image_url: img.url,
+          thumbnail_url: img.url, // Same image used as thumbnail
         }));
 
-        // Merge wallpapers and categories
-        const combinedWallpapers = [...backendData.wallpapers, ...pixabayWallpapers];
-        const combinedCategories = [...new Set([...categoryData.categories, "Pixabay"])];
+        const combinedWallpapers = [...backendData.wallpapers, ...nekosWallpapers];
+        const combinedCategories = [...new Set([...categoryData.categories, "Anime"])];
 
         setWallpapers(combinedWallpapers);
         setCategories(combinedCategories);
