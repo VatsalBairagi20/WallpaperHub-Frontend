@@ -27,24 +27,35 @@ const CategoryPage = () => {
         const categoryRes = await fetch(`https://wallpaperhub-backend.onrender.com/api/get-categories`);
         const categoryData = await categoryRes.json();
 
-        // Fetch from Waifu.pics API for Anime Wallpapers
+        // Fetch from Waifu.pics API for Anime Wallpapers (with more wallpapers for different anime)
         const waifuRes = await fetch("https://api.waifu.pics/sfw/waifu");
         const waifuData = await waifuRes.json();
 
-        const waifuWallpapers = waifuData.url
-          ? [{
-              _id: "waifu-1",
-              name: "Anime Wallpaper",
-              description: "Sourced from Waifu.pics",
-              category: "Anime",
-              device: "pc", // Assuming these wallpapers are high-res for PC
-              image_url: waifuData.url,
-              thumbnail_url: waifuData.url,
-            }]
-          : [];
+        // Assuming you have categories and some logic to categorize wallpapers, like:
+        // "Naruto", "Jujutsu Kaisen", etc.
+        const animeCategories = [
+          { name: "Naruto", url: "https://example.com/naruto_wallpapers" },
+          { name: "Jujutsu Kaisen", url: "https://example.com/jujutsu_wallpapers" }
+        ];
 
-        const combinedWallpapers = [...backendData.wallpapers, ...waifuWallpapers];
-        const combinedCategories = [...new Set([...categoryData.categories, "Anime"])];
+        // Fetch wallpapers for specific anime categories
+        const animeWallpapers = [];
+        for (let category of animeCategories) {
+          const categoryRes = await fetch(category.url);
+          const categoryWallpapers = await categoryRes.json();
+          categoryWallpapers.forEach((wp) => {
+            animeWallpapers.push({
+              ...wp,
+              category: category.name,
+            });
+          });
+        }
+
+        // Combine all data: backend, waifu, and anime-specific categories
+        const combinedWallpapers = [...backendData.wallpapers, ...animeWallpapers];
+        const combinedCategories = [
+          ...new Set([...categoryData.categories, "Anime", ...animeCategories.map((cat) => cat.name)]),
+        ];
 
         setWallpapers(combinedWallpapers);
         setCategories(combinedCategories);
