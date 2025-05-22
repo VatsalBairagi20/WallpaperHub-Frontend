@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./HomePage.css";
 
+const PIXABAY_API_KEY = "47849701-73acc40f5327790e47c2f6a81"; // Replace with your Pixabay API key
+
 const HomePage = () => {
   const [wallpapers, setWallpapers] = useState([]);
   const [activeTab, setActiveTab] = useState("pc");
@@ -9,12 +11,33 @@ const HomePage = () => {
   const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
-    fetch("https://wallpaperhub-backend.onrender.com/api/get-wallpapers")
-      .then((res) => res.json())
-      .then((data) => {
-        setWallpapers(data.wallpapers);
-      })
-      .catch((err) => console.error("Error fetching wallpapers:", err));
+    const fetchWallpapers = async () => {
+      try {
+        const [backendRes, pixabayRes] = await Promise.all([
+          fetch("https://wallpaperhub-backend.onrender.com/api/get-wallpapers"),
+          fetch(`https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=wallpapers&image_type=photo&per_page=50`)
+        ]);
+
+        const backendData = await backendRes.json();
+        const pixabayData = await pixabayRes.json();
+
+        const pixabayWallpapers = pixabayData.hits.map((img) => ({
+          _id: `pixabay-${img.id}`,
+          name: img.tags || "Pixabay Image",
+          description: `Photo by ${img.user}`,
+          category: "Pixabay",
+          device: img.imageWidth > img.imageHeight ? "pc" : "mobile",
+          image_url: img.largeImageURL,
+          thumbnail_url: img.previewURL
+        }));
+
+        setWallpapers([...backendData.wallpapers, ...pixabayWallpapers]);
+      } catch (error) {
+        console.error("Error fetching wallpapers:", error);
+      }
+    };
+
+    fetchWallpapers();
 
     const handleKeyDown = (e) => {
       if (e.key === "Escape") closeModal();
