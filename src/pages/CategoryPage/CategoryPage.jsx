@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CategoryPage.css";
 
-const PIXABAY_API_KEY = "47849701-73acc40f5327790e47c2f6a81"; // Replace this with your real API key
+const PIXABAY_API_KEY = "47849701-73acc40f5327790e47c2f6a81"; // Replace with your key
 
 const CategoryPage = () => {
   const [wallpapers, setWallpapers] = useState([]);
@@ -19,15 +19,24 @@ const CategoryPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchWallpapers = async () => {
+    const fetchAllData = async () => {
       try {
-        const res = await fetch(
-          `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=wallpapers&image_type=photo&per_page=100`
-        );
-        const data = await res.json();
+        // Fetch your backend wallpapers
+        const backendRes = await fetch(`https://wallpaperhub-backend.onrender.com/api/get-wallpapers`);
+        const backendData = await backendRes.json();
 
-        const transformed = data.hits.map((img) => ({
-          _id: img.id,
+        // Fetch your backend categories
+        const categoryRes = await fetch(`https://wallpaperhub-backend.onrender.com/api/get-categories`);
+        const categoryData = await categoryRes.json();
+
+        // Fetch from Pixabay
+        const pixabayRes = await fetch(
+          `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=wallpapers&image_type=photo&per_page=50`
+        );
+        const pixabayData = await pixabayRes.json();
+
+        const pixabayWallpapers = pixabayData.hits.map((img) => ({
+          _id: `pixabay-${img.id}`,
           name: img.tags,
           description: `Photo by ${img.user}`,
           category: "Pixabay",
@@ -36,14 +45,18 @@ const CategoryPage = () => {
           thumbnail_url: img.previewURL,
         }));
 
-        setWallpapers(transformed);
-        setCategories(["Pixabay"]);
+        // Merge wallpapers and categories
+        const combinedWallpapers = [...backendData.wallpapers, ...pixabayWallpapers];
+        const combinedCategories = [...new Set([...categoryData.categories, "Pixabay"])];
+
+        setWallpapers(combinedWallpapers);
+        setCategories(combinedCategories);
       } catch (error) {
-        console.error("Failed to fetch from Pixabay:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
-    fetchWallpapers();
+    fetchAllData();
 
     const handleEsc = (e) => {
       if (e.key === "Escape") setSelectedWallpaper(null);
@@ -93,7 +106,10 @@ const CategoryPage = () => {
   const closeModal = () => setSelectedWallpaper(null);
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
-  const getImageUrl = (imageUrl) => imageUrl;
+  const getImageUrl = (imageUrl) =>
+    imageUrl.startsWith("http")
+      ? imageUrl
+      : `https://wallpaperhub-backend.onrender.com${imageUrl}`;
 
   return (
     <div className="category-page-container">
