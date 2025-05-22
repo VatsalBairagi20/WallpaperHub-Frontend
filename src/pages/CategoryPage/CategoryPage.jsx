@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CategoryPage.css";
 
+const PIXABAY_API_KEY = "47849701-73acc40f5327790e47c2f6a81"; // Replace this with your real API key
+
 const CategoryPage = () => {
   const [wallpapers, setWallpapers] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -16,68 +18,33 @@ const CategoryPage = () => {
 
   const navigate = useNavigate();
 
-  // Function to fetch all wallpapers
-  const fetchWallpapers = async () => {
-    try {
-      // Fetching wallpapers from the backend
-      const backendRes = await fetch(`https://wallpaperhub-backend.onrender.com/api/get-wallpapers`);
-      const backendData = await backendRes.json();
-
-      // Check if the backend data has the wallpapers
-      if (!backendData || !backendData.wallpapers) {
-        console.error("Backend response format is incorrect or no wallpapers returned.");
-        return;
-      }
-
-      // Fetch categories from the backend
-      const categoryRes = await fetch(`https://wallpaperhub-backend.onrender.com/api/get-categories`);
-      const categoryData = await categoryRes.json();
-
-      // Assuming you also want to fetch anime wallpaper categories
-      const animeCategories = [
-        { name: "Naruto", url: "https://example.com/naruto_wallpapers" },
-        { name: "Jujutsu Kaisen", url: "https://example.com/jujutsu_wallpapers" }
-      ];
-
-      // Function to fetch wallpapers from external sources like anime categories
-      const fetchCategoryWallpapers = async (categoryUrl) => {
-        const res = await fetch(categoryUrl);
-        const data = await res.json();
-        return data; // Array of wallpapers
-      };
-
-      // Fetch all anime category wallpapers
-      const animeWallpapersPromises = animeCategories.map(async (category) => {
-        const categoryWallpapers = await fetchCategoryWallpapers(category.url);
-        return categoryWallpapers.map((wp) => ({
-          ...wp,
-          category: category.name,
-        }));
-      });
-
-      // Wait for all category wallpapers to be fetched
-      const animeWallpapers = await Promise.all(animeWallpapersPromises);
-
-      // Combine all wallpapers from backend and anime categories
-      const allWallpapers = [...backendData.wallpapers, ...animeWallpapers.flat()];
-
-      // Fetch all categories (backend and anime)
-      const allCategories = [
-        ...categoryData.categories,
-        ...animeCategories.map((cat) => cat.name),
-      ];
-
-      // Update state
-      setWallpapers(allWallpapers);
-      setCategories(allCategories);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  // Fetch the wallpapers and categories when the component mounts
   useEffect(() => {
+    const fetchWallpapers = async () => {
+      try {
+        const res = await fetch(
+          `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=wallpapers&image_type=photo&per_page=100`
+        );
+        const data = await res.json();
+
+        const transformed = data.hits.map((img) => ({
+          _id: img.id,
+          name: img.tags,
+          description: `Photo by ${img.user}`,
+          category: "Pixabay",
+          device: img.imageWidth > img.imageHeight ? "pc" : "mobile",
+          image_url: img.largeImageURL,
+          thumbnail_url: img.previewURL,
+        }));
+
+        setWallpapers(transformed);
+        setCategories(["Pixabay"]);
+      } catch (error) {
+        console.error("Failed to fetch from Pixabay:", error);
+      }
+    };
+
     fetchWallpapers();
+
     const handleEsc = (e) => {
       if (e.key === "Escape") setSelectedWallpaper(null);
     };
@@ -85,7 +52,6 @@ const CategoryPage = () => {
     return () => window.removeEventListener("keydown", handleEsc);
   }, []);
 
-  // Filter wallpapers based on selected category
   const filteredWallpapers = selectedCategory
     ? wallpapers.filter((wp) => wp.category === selectedCategory)
     : wallpapers;
@@ -127,10 +93,7 @@ const CategoryPage = () => {
   const closeModal = () => setSelectedWallpaper(null);
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
-  const getImageUrl = (imageUrl) =>
-    imageUrl.startsWith("http")
-      ? imageUrl
-      : `https://wallpaperhub-backend.onrender.com${imageUrl}`;
+  const getImageUrl = (imageUrl) => imageUrl;
 
   return (
     <div className="category-page-container">
