@@ -6,6 +6,7 @@ body, html {
   background: #0f0f0f;
   color: #f1f1f1;
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 a {
@@ -41,6 +42,7 @@ a {
   width: 100%;
   top: 0;
   z-index: 999;
+  box-sizing: border-box;
 }
 
 .homepage-logo {
@@ -52,6 +54,7 @@ a {
   display: flex;
   list-style: none;
   gap: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .homepage-nav-links li a {
@@ -102,6 +105,7 @@ a {
   z-index: 1;
   color: #fff;
   max-width: 600px;
+  padding: 1rem;
 }
 
 .homepage-hero-title {
@@ -203,11 +207,13 @@ a {
   position: relative;
   background: #222;
   padding: 2rem;
-  max-width: 800px;
-  width: 90%;
+  max-width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
   border-radius: 10px;
   z-index: 1001;
   color: #fff;
+  box-sizing: border-box;
 }
 
 .homepage-modal-close {
@@ -219,6 +225,7 @@ a {
   color: #fff;
   font-size: 1.5rem;
   cursor: pointer;
+  z-index: 1002;
 }
 
 .homepage-modal-image {
@@ -293,6 +300,7 @@ a {
     display: none;
     padding: 1rem;
     border-radius: 5px;
+    z-index: 1001;
   }
 
   .homepage-nav-active {
