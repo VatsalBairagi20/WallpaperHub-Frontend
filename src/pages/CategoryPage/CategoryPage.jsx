@@ -1,3 +1,4 @@
+// Updated CategoryPage.jsx with HomePage-style navbar
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CategoryPage.css";
@@ -9,11 +10,7 @@ const CategoryPage = () => {
   const [activeTab, setActiveTab] = useState("pc");
   const [selectedWallpaper, setSelectedWallpaper] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
-  const [showPinInput, setShowPinInput] = useState(false);
-  const [pin, setPin] = useState("");
-  const [error, setError] = useState("");
-  const [menuOpen, setMenuOpen] = useState(false);
-
+  const [isNavOpen, setIsNavOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,52 +60,26 @@ const CategoryPage = () => {
     }
   };
 
-  const handlePinSubmit = () => {
-    if (pin === "1234") {
-      navigate("/admin");
-    } else {
-      setError("Incorrect PIN");
-    }
-  };
-
-  const openModal = (wallpaper) => setSelectedWallpaper(wallpaper);
-  const closeModal = () => setSelectedWallpaper(null);
-  const toggleMenu = () => setMenuOpen(!menuOpen);
-
   const getImageUrl = (imageUrl) =>
     imageUrl.startsWith("http")
       ? imageUrl
       : `https://wallpaperhub-backend.onrender.com${imageUrl}`;
 
+  const openModal = (wallpaper) => setSelectedWallpaper(wallpaper);
+  const closeModal = () => setSelectedWallpaper(null);
+
   return (
     <div className="category-page">
-      <nav className="navbar">
-        <div className="navbar-brand">WallpaperHub</div>
-        <button className="hamburger" onClick={toggleMenu} aria-label="Toggle menu">
-          <span className="bar"></span>
-          <span className="bar"></span>
-          <span className="bar"></span>
-        </button>
-        <ul className={`nav-links ${menuOpen ? "active" : ""}`}>
+      <nav className="homepage-navbar glass-effect">
+        <div className="homepage-logo gradient-text">WallpaperHub</div>
+        <ul className={`homepage-nav-links ${isNavOpen ? "homepage-nav-active" : ""}`}>
           <li><a href="/">Home</a></li>
           <li><a href="/categories">Categories</a></li>
           <li><a href="#contact">Contact</a></li>
-          <li>
-            <button onClick={() => setShowPinInput(!showPinInput)} className="login-btn">🔐 Login</button>
-          </li>
         </ul>
-        {showPinInput && (
-          <div className="pin-input">
-            <input
-              type="password"
-              placeholder="Admin PIN"
-              value={pin}
-              onChange={(e) => setPin(e.target.value)}
-            />
-            <button onClick={handlePinSubmit}>Submit</button>
-            {error && <p className="error">{error}</p>}
-          </div>
-        )}
+        <div className="homepage-hamburger" onClick={() => setIsNavOpen(!isNavOpen)}>
+          <span></span><span></span><span></span>
+        </div>
       </nav>
 
       <header className="hero">
@@ -151,51 +122,38 @@ const CategoryPage = () => {
       </section>
 
       {selectedWallpaper && (
-        <WallpaperModal
-          wallpaper={selectedWallpaper}
-          onClose={closeModal}
-          onDownload={handleDownload}
-          isDownloading={isDownloading}
-          getImageUrl={getImageUrl}
-        />
+        <div className="homepage-modal fade-in">
+          <div className="homepage-modal-content glass-effect">
+            <button className="homepage-modal-close" onClick={closeModal}>✕</button>
+            <div className="homepage-modal-image-container">
+              <img src={getImageUrl(selectedWallpaper.image_url)} alt={selectedWallpaper.name} />
+            </div>
+            <div className="homepage-modal-details">
+              <h2>{selectedWallpaper.name}</h2>
+              <p><strong>Description:</strong> {selectedWallpaper.description}</p>
+              <p><strong>Category:</strong> {selectedWallpaper.category}</p>
+              <p><strong>Device:</strong> {selectedWallpaper.device}</p>
+              <button
+                className="homepage-download-btn shine"
+                onClick={() => handleDownload(getImageUrl(selectedWallpaper.image_url), selectedWallpaper.name)}
+                disabled={isDownloading}
+              >
+                {isDownloading ? "Downloading..." : "Download"}
+              </button>
+            </div>
+          </div>
+          <div className="homepage-modal-backdrop" onClick={closeModal}></div>
+        </div>
       )}
 
-      <footer className="footer" id="contact">
-        <h2>Contact Us</h2>
-        <p>Developed and Maintained by Vatsal Bairagi</p>
+      <footer className="homepage-footer glass-effect" id="contact">
+        <p>Developed and maintained by Vatsal Bairagi</p>
         <p>Email: <a href="mailto:support@wallpaperhub.com">support@wallpaperhub.com</a></p>
         <p>Instagram: <a href="https://instagram.com/wallpaperhub" target="_blank">@wallpaperhub</a></p>
-        <form>
-          <input type="text" placeholder="Your Name" required />
-          <input type="email" placeholder="Your Email" required />
-          <textarea placeholder="Your Message" required></textarea>
-          <button type="submit">Send</button>
-        </form>
-        <p>© 2025 WallpaperHub. Built with 💪 by <strong>Vatsal Bairagi</strong></p>
-        <div>
-          <a href="https://instagram.com" target="_blank">Instagram</a>
-          <a href="https://github.com/vatsalbairagi" target="_blank">GitHub</a>
-        </div>
+        <p>© 2025 WallpaperHub. All rights reserved.</p>
       </footer>
     </div>
   );
 };
-
-const WallpaperModal = ({ wallpaper, onClose, onDownload, isDownloading, getImageUrl }) => (
-  <div className="modal">
-    <div className="modal-content">
-      <button className="close" onClick={onClose}>✕</button>
-      <img src={getImageUrl(wallpaper.image_url)} alt={wallpaper.name} />
-      <h2>{wallpaper.name}</h2>
-      <p><strong>Description:</strong> {wallpaper.description}</p>
-      <p><strong>Category:</strong> {wallpaper.category}</p>
-      <p><strong>Device:</strong> {wallpaper.device}</p>
-      <button onClick={() => onDownload(getImageUrl(wallpaper.image_url), wallpaper.name)} disabled={isDownloading}>
-        {isDownloading ? "Downloading..." : "Download"}
-      </button>
-    </div>
-    <div className="backdrop" onClick={onClose}></div>
-  </div>
-);
 
 export default CategoryPage;
