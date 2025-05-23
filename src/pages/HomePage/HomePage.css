@@ -315,4 +315,24 @@ a {
   .homepage-hamburger {
     display: flex;
   }
+
+  /* ↓↓↓ Mobile Tweaks Below ↓↓↓ */
+
+  .homepage-logo {
+    font-size: 1.3rem; /* Smaller logo text */
+  }
+
+  .homepage-hero {
+    height: 60vh; /* Slightly shorter hero on mobile */
+    margin-top: 70px;
+  }
+
+  .homepage-hero-title {
+    font-size: 2rem; /* Smaller hero text */
+  }
+
+  .homepage-cta-button {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+  }
 }
