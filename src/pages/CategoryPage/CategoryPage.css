@@ -10,7 +10,7 @@ body, html {
   overflow-x: hidden;
 }
 
-.category-page .navbar {
+.homepage-navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -23,42 +23,48 @@ body, html {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.navbar-brand {
+.homepage-logo {
   font-size: 1.8rem;
   font-weight: bold;
   color: #ff7b00;
 }
 
-.hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 0.3rem;
-  cursor: pointer;
-  background: none;
-  border: none;
+.gradient-text {
+  background: linear-gradient(to right, #ff7b00, #ffcf00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.hamburger .bar {
-  width: 25px;
-  height: 3px;
-  background: #fff;
-  border-radius: 3px;
-}
-
-.nav-links {
+.homepage-nav-links {
   display: flex;
   list-style: none;
   gap: 1.5rem;
 }
 
-.nav-links li a {
+.homepage-nav-links li a {
   color: #fff;
   font-weight: 500;
   transition: color 0.3s;
+  text-decoration: none;
 }
 
-.nav-links li a:hover {
+.homepage-nav-links li a:hover {
   color: #ff7b00;
+}
+
+.homepage-hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 0.3rem;
+}
+
+.homepage-hamburger span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background: #fff;
+  border-radius: 3px;
 }
 
 .login-btn {
@@ -253,7 +259,7 @@ body, html {
 }
 
 @media (max-width: 768px) {
-  .nav-links {
+  .homepage-nav-links {
     display: none;
     flex-direction: column;
     background: #111;
@@ -261,14 +267,15 @@ body, html {
     top: 60px;
     right: 0;
     padding: 1rem;
-    border-radius: 5px;
+    border-radius: 8px;
+    z-index: 998;
   }
 
-  .nav-links.active {
+  .homepage-nav-links.homepage-nav-active {
     display: flex;
   }
 
-  .hamburger {
+  .homepage-hamburger {
     display: flex;
   }
 
