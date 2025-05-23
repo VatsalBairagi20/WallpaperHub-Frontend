@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./HomePage.css";
 
-const PIXABAY_API_KEY = "47849701-73acc40f5327790e47c2f6a81"; // Replace with your Pixabay API key
+const PIXABAY_API_KEY = "47849701-73acc40f5327790e47c2f6a81";
 
 const HomePage = () => {
   const [wallpapers, setWallpapers] = useState([]);
@@ -9,43 +9,45 @@ const HomePage = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [selectedWallpaper, setSelectedWallpaper] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const fetchWallpapers = useCallback(async () => {
+    try {
+      setLoading(true);
+      const [backendRes, pixabayRes] = await Promise.all([
+        fetch("https://wallpaperhub-backend.onrender.com/api/get-wallpapers"),
+        fetch(`https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=wallpapers&image_type=photo&per_page=50`)
+      ]);
+
+      const backendData = await backendRes.json();
+      const pixabayData = await pixabayRes.json();
+
+      const pixabayWallpapers = pixabayData.hits.map((img) => ({
+        _id: `pixabay-${img.id}`,
+        name: img.tags || "Pixabay Image",
+        description: `Photo by ${img.user}`,
+        category: "Pixabay",
+        device: img.imageWidth > img.imageHeight ? "pc" : "mobile",
+        image_url: img.largeImageURL,
+        thumbnail_url: img.previewURL
+      }));
+
+      setWallpapers([...backendData.wallpapers, ...pixabayWallpapers]);
+    } catch (error) {
+      console.error("Error fetching wallpapers:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    const fetchWallpapers = async () => {
-      try {
-        const [backendRes, pixabayRes] = await Promise.all([
-          fetch("https://wallpaperhub-backend.onrender.com/api/get-wallpapers"),
-          fetch(`https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=wallpapers&image_type=photo&per_page=50`)
-        ]);
-
-        const backendData = await backendRes.json();
-        const pixabayData = await pixabayRes.json();
-
-        const pixabayWallpapers = pixabayData.hits.map((img) => ({
-          _id: `pixabay-${img.id}`,
-          name: img.tags || "Pixabay Image",
-          description: `Photo by ${img.user}`,
-          category: "Pixabay",
-          device: img.imageWidth > img.imageHeight ? "pc" : "mobile",
-          image_url: img.largeImageURL,
-          thumbnail_url: img.previewURL
-        }));
-
-        setWallpapers([...backendData.wallpapers, ...pixabayWallpapers]);
-      } catch (error) {
-        console.error("Error fetching wallpapers:", error);
-      }
-    };
-
     fetchWallpapers();
-
     const handleKeyDown = (e) => {
       if (e.key === "Escape") closeModal();
     };
-
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [fetchWallpapers]);
 
   const pcWallpapers = wallpapers.filter((wp) => wp.device.toLowerCase() === "pc");
   const mobileWallpapers = wallpapers.filter((wp) => wp.device.toLowerCase() === "mobile");
@@ -53,10 +55,7 @@ const HomePage = () => {
   const openModal = (wallpaper) => setSelectedWallpaper(wallpaper);
   const closeModal = () => setSelectedWallpaper(null);
 
-  const getImageUrl = (imageUrl) =>
-    imageUrl.startsWith("http")
-      ? imageUrl
-      : `https://wallpaperhub-backend.onrender.com${imageUrl}`;
+  const getImageUrl = (url) => url.startsWith("http") ? url : `https://wallpaperhub-backend.onrender.com${url}`;
 
   const handleDownload = async (url, name) => {
     setIsDownloading(true);
@@ -84,9 +83,8 @@ const HomePage = () => {
 
   return (
     <div className="homepage-container">
-      {/* Navbar */}
-      <nav className="homepage-navbar">
-        <div className="homepage-logo">WallpaperHub</div>
+      <nav className="homepage-navbar glass-effect">
+        <div className="homepage-logo gradient-text">WallpaperHub</div>
         <ul className={`homepage-nav-links ${isNavOpen ? "homepage-nav-active" : ""}`}>
           <li><a href="#hero">Home</a></li>
           <li><a href="/categories">Categories</a></li>
@@ -97,57 +95,46 @@ const HomePage = () => {
         </div>
       </nav>
 
-      {/* Hero Section */}
       <section id="hero" className="homepage-hero">
         <div className="homepage-hero-overlay"></div>
-        <div className="homepage-hero-content">
-          <h1>Discover Epic Wallpapers</h1>
+        <div className="homepage-hero-content fade-in">
+          <h1 className="homepage-hero-title gradient-text">Discover Epic Wallpapers</h1>
           <p>Elevate your device with stunning visuals from our collection.</p>
           <a href="#wallpapers" className="homepage-cta-button">Explore Now</a>
         </div>
       </section>
 
-      {/* Wallpapers Section */}
       <section id="wallpapers" className="homepage-wallpapers">
-        <h2>Our Collection</h2>
+        <h2 className="homepage-section-title">Our Collection</h2>
         <div className="homepage-tabs">
-          <button
-            className={activeTab === "pc" ? "homepage-tab-active" : ""}
-            onClick={() => setActiveTab("pc")}
-          >
-            PC Wallpapers
-          </button>
-          <button
-            className={activeTab === "mobile" ? "homepage-tab-active" : ""}
-            onClick={() => setActiveTab("mobile")}
-          >
-            Mobile Wallpapers
-          </button>
+          <button className={activeTab === "pc" ? "homepage-tab-active" : ""} onClick={() => setActiveTab("pc")}>PC Wallpapers</button>
+          <button className={activeTab === "mobile" ? "homepage-tab-active" : ""} onClick={() => setActiveTab("mobile")}>Mobile Wallpapers</button>
         </div>
-        <div className="homepage-wallpapers-gallery">
-          {(activeTab === "pc" ? pcWallpapers : mobileWallpapers).map((wallpaper) => (
-            <div
-              className={`homepage-wallpaper-card ${
-                activeTab === "pc" ? "homepage-landscape" : "homepage-portrait"
-              }`}
-              key={wallpaper._id}
-              onClick={() => openModal(wallpaper)}
-            >
-              <img
-                src={getImageUrl(wallpaper.thumbnail_url || wallpaper.image_url)}
-                alt={wallpaper.name}
-                className="homepage-wallpaper-image"
-                loading="lazy"
-              />
-            </div>
-          ))}
-        </div>
+        {loading ? (
+          <p className="homepage-loading">Loading wallpapers...</p>
+        ) : (
+          <div className="homepage-wallpapers-gallery grid-responsive">
+            {(activeTab === "pc" ? pcWallpapers : mobileWallpapers).map((wallpaper) => (
+              <div
+                className={`homepage-wallpaper-card shadow-lg rounded ${activeTab === "pc" ? "homepage-landscape" : "homepage-portrait"}`}
+                key={wallpaper._id}
+                onClick={() => openModal(wallpaper)}
+              >
+                <img
+                  src={getImageUrl(wallpaper.thumbnail_url || wallpaper.image_url)}
+                  alt={wallpaper.name}
+                  className="homepage-wallpaper-image hover-zoom"
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
-      {/* Modal */}
       {selectedWallpaper && (
-        <div className="homepage-modal">
-          <div className="homepage-modal-content">
+        <div className="homepage-modal fade-in">
+          <div className="homepage-modal-content glass-effect">
             <button className="homepage-modal-close" onClick={closeModal}>✕</button>
             <div className="homepage-modal-image-container">
               <img
@@ -162,10 +149,8 @@ const HomePage = () => {
               <p><strong>Category:</strong> {selectedWallpaper.category}</p>
               <p><strong>Device:</strong> {selectedWallpaper.device}</p>
               <button
-                className="homepage-download-btn"
-                onClick={() =>
-                  handleDownload(getImageUrl(selectedWallpaper.image_url), selectedWallpaper.name)
-                }
+                className="homepage-download-btn shine"
+                onClick={() => handleDownload(getImageUrl(selectedWallpaper.image_url), selectedWallpaper.name)}
                 disabled={isDownloading}
               >
                 {isDownloading ? "Downloading..." : "Download"}
@@ -176,7 +161,6 @@ const HomePage = () => {
         </div>
       )}
 
-      {/* Contact Section */}
       <section id="contact" className="homepage-contact-section">
         <p>Developed and maintained by Vatsal Bairagi</p>
         <div className="homepage-contact-info">
@@ -185,8 +169,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="homepage-footer">
+      <footer className="homepage-footer glass-effect">
         <p>© 2025 WallpaperHub. All rights reserved.</p>
         <div className="homepage-social-links">
           <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
