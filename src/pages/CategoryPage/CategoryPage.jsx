@@ -17,41 +17,15 @@ const CategoryPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchAllData = async () => {
-      try {
-        // Fetch backend wallpapers
-        const backendRes = await fetch(`https://wallpaperhub-backend.onrender.com/api/get-wallpapers`);
-        const backendData = await backendRes.json();
+    fetch(`https://wallpaperhub-backend.onrender.com/api/get-wallpapers`)
+      .then((res) => res.json())
+      .then((data) => setWallpapers(data.wallpapers))
+      .catch((err) => console.error("Error loading wallpapers:", err));
 
-        // Fetch backend categories
-        const categoryRes = await fetch(`https://wallpaperhub-backend.onrender.com/api/get-categories`);
-        const categoryData = await categoryRes.json();
-
-        // Fetch from Nekos API
-        const nekosRes = await fetch("https://nekosapi.com/api/v3/images/random?limit=20");
-        const nekosData = await nekosRes.json();
-
-        const nekosWallpapers = nekosData.items.map((img, index) => ({
-          _id: `nekos-${index}`,
-          name: "Anime Wallpaper",
-          description: "Sourced from Nekos API",
-          category: "Anime",
-          device: img.width > img.height ? "pc" : "mobile",
-          image_url: img.url,
-          thumbnail_url: img.url, // Same image used as thumbnail
-        }));
-
-        const combinedWallpapers = [...backendData.wallpapers, ...nekosWallpapers];
-        const combinedCategories = [...new Set([...categoryData.categories, "Anime"])];
-
-        setWallpapers(combinedWallpapers);
-        setCategories(combinedCategories);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchAllData();
+    fetch(`https://wallpaperhub-backend.onrender.com/api/get-categories`)
+      .then((res) => res.json())
+      .then((data) => setCategories(data.categories))
+      .catch((err) => console.error("Error loading categories:", err));
 
     const handleEsc = (e) => {
       if (e.key === "Escape") setSelectedWallpaper(null);
