@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./HomePage.css";
 
-const PIXABAY_API_KEY = "47849701-73acc40f5327790e47c2f6a81";
+// const PIXABAY_API_KEY = "47849701-73acc40f5327790e47c2f6a81";
 
 const HomePage = () => {
   const [wallpapers, setWallpapers] = useState([]);
