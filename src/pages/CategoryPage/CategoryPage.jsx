@@ -84,7 +84,7 @@ const CategoryPage = () => {
     <div className="category-page">
       <nav className="navbar">
         <div className="navbar-brand">WallpaperHub</div>
-        <button className="hamburger" onClick={toggleMenu}>
+        <button className="hamburger" onClick={toggleMenu} aria-label="Toggle menu">
           <span className="bar"></span>
           <span className="bar"></span>
           <span className="bar"></span>
