@@ -43,6 +43,8 @@ a {
   top: 0;
   z-index: 999;
   box-sizing: border-box;
+  background: #0f0f0f; /* Solid background */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Optional border */
 }
 
 .homepage-logo {
@@ -82,8 +84,9 @@ a {
 
 /* Hero Section */
 .homepage-hero {
-  height: 100vh;
-  background: url('your-image.gif') no-repeat center center / cover;
+  margin-top: 80px; /* Push below navbar */
+  height: 70vh; /* Reduced height */
+  background: url('Image.gif') no-repeat center center / cover;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -91,22 +94,23 @@ a {
   text-align: center;
 }
 
-
 .homepage-hero-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.65); /* Stronger for contrast */
 }
 
 .homepage-hero-content {
   position: relative;
   z-index: 1;
-  color: #fff;
+  color: #ffffff;
   max-width: 600px;
   padding: 1rem;
+  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
+  transform: translateY(-10%);
 }
 
 .homepage-hero-title {
