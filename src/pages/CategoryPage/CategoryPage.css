@@ -117,19 +117,17 @@ a {
 }
 
 .tabs button {
-  background: none;
-  border: 2px solid #fff;
+  padding: 0.6rem 1.2rem;
+  background: #1a1a1a;
+  border: none;
   color: #fff;
-  padding: 0.5rem 1rem;
-  margin: 0 1rem;
+  border-radius: 6px;
   cursor: pointer;
-  border-radius: 20px;
-  transition: 0.3s;
+  transition: background 0.3s ease;
 }
 
 .tabs .active {
   background: #ff7b00;
-  border-color: #ff7b00;
 }
 
 .tabs button:hover {
@@ -141,14 +139,17 @@ a {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 1.5rem;
-  margin-top: 2rem;
+  padding: 0 2rem;
+  margin-bottom: 3rem;
 }
 
 .wallpaper-card {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+  height: 250px;
 }
 
 .wallpaper-card img {
@@ -213,6 +214,9 @@ a {
   margin-bottom: 1rem;
 }
 
+.category-modal-details {
+  text-align: left;
+}
 
 .category-download-btn {
   margin-top: 1rem;
@@ -296,4 +300,89 @@ a {
     font-size: 0.9rem;
     padding: 0.6rem 1.2rem;
   }
+}
+
+/* Homepage Styles Aligned with JSX */
+.homepage-wallpaper-card {
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+  height: 250px;
+}
+
+.homepage-wallpaper-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hover-zoom:hover {
+  transform: scale(1.05);
+}
+
+.homepage-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.homepage-modal-backdrop {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.homepage-modal-content {
+  position: relative;
+  background: #222;
+  padding: 2rem;
+  max-width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  border-radius: 10px;
+  z-index: 1001;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.homepage-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 1002;
+}
+
+.homepage-modal-image {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.homepage-download-btn {
+  margin-top: 1rem;
+  padding: 0.7rem 1.2rem;
+  background-color: #ff7b00;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.homepage-download-btn:hover {
+  background-color: #e86c00;
 }
