@@ -9,19 +9,49 @@ const CategoryPage = () => {
   const [activeTab, setActiveTab] = useState("pc");
   const [selectedWallpaper, setSelectedWallpaper] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
-  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [showPinInput, setShowPinInput] = useState(false);
+  const [pin, setPin] = useState("");
+  const [error, setError] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`https://wallpaperhub-backend.onrender.com/api/get-wallpapers`)
-      .then((res) => res.json())
-      .then((data) => setWallpapers(data.wallpapers))
-      .catch((err) => console.error("Error loading wallpapers:", err));
+    const fetchAllData = async () => {
+      try {
+        // Fetch backend wallpapers
+        const backendRes = await fetch(`https://wallpaperhub-backend.onrender.com/api/get-wallpapers`);
+        const backendData = await backendRes.json();
 
-    fetch(`https://wallpaperhub-backend.onrender.com/api/get-categories`)
-      .then((res) => res.json())
-      .then((data) => setCategories(data.categories))
-      .catch((err) => console.error("Error loading categories:", err));
+        // Fetch backend categories
+        const categoryRes = await fetch(`https://wallpaperhub-backend.onrender.com/api/get-categories`);
+        const categoryData = await categoryRes.json();
+
+        // Fetch from Nekos API
+        const nekosRes = await fetch("https://nekosapi.com/api/v3/images/random?limit=20");
+        const nekosData = await nekosRes.json();
+
+        const nekosWallpapers = nekosData.items.map((img, index) => ({
+          _id: `nekos-${index}`,
+          name: "Anime Wallpaper",
+          description: "Sourced from Nekos API",
+          category: "Anime",
+          device: img.width > img.height ? "pc" : "mobile",
+          image_url: img.url,
+          thumbnail_url: img.url, // Same image used as thumbnail
+        }));
+
+        const combinedWallpapers = [...backendData.wallpapers, ...nekosWallpapers];
+        const combinedCategories = [...new Set([...categoryData.categories, "Anime"])];
+
+        setWallpapers(combinedWallpapers);
+        setCategories(combinedCategories);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchAllData();
 
     const handleEsc = (e) => {
       if (e.key === "Escape") setSelectedWallpaper(null);
@@ -29,15 +59,6 @@ const CategoryPage = () => {
     window.addEventListener("keydown", handleEsc);
     return () => window.removeEventListener("keydown", handleEsc);
   }, []);
-
-  // Lock body scroll when nav is open (mobile)
-  useEffect(() => {
-    if (isNavOpen) {
-      document.body.classList.add("nav-open");
-    } else {
-      document.body.classList.remove("nav-open");
-    }
-  }, [isNavOpen]);
 
   const filteredWallpapers = selectedCategory
     ? wallpapers.filter((wp) => wp.category === selectedCategory)
@@ -68,109 +89,190 @@ const CategoryPage = () => {
     }
   };
 
+  const handlePinSubmit = () => {
+    if (pin === "1234") {
+      navigate("/admin");
+    } else {
+      setError("Incorrect PIN");
+    }
+  };
+
+  const openModal = (wallpaper) => setSelectedWallpaper(wallpaper);
+  const closeModal = () => setSelectedWallpaper(null);
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+
   const getImageUrl = (imageUrl) =>
     imageUrl.startsWith("http")
       ? imageUrl
       : `https://wallpaperhub-backend.onrender.com${imageUrl}`;
 
-  const openModal = (wallpaper) => setSelectedWallpaper(wallpaper);
-  const closeModal = () => setSelectedWallpaper(null);
-
   return (
-    <div className="category-page">
-      <nav className="category-navbar glass-effect">
-        <div className="category-logo gradient-text">WallpaperHub</div>
-        <ul className={`category-nav-links ${isNavOpen ? "category-nav-active" : ""}`}>
+    <div className="category-page-container">
+      <nav className="category-navbar">
+        <div className="category-logo">WallpaperHub</div>
+
+        <button className="category-hamburger" onClick={toggleMenu} aria-label="Toggle menu">
+          <span className={`bar ${menuOpen ? "open" : ""}`}></span>
+          <span className={`bar ${menuOpen ? "open" : ""}`}></span>
+          <span className={`bar ${menuOpen ? "open" : ""}`}></span>
+        </button>
+
+        <ul className={`category-nav-links ${menuOpen ? "open" : ""}`}>
           <li><a href="/">Home</a></li>
           <li><a href="/categories">Categories</a></li>
           <li><a href="#contact">Contact</a></li>
+          <li>
+            <button onClick={() => {
+              setShowPinInput(!showPinInput);
+              setMenuOpen(false);
+            }} className="category-login-btn">🔐 Login</button>
+          </li>
         </ul>
-        <div
-          className="category-hamburger"
-          onClick={() => setIsNavOpen(!isNavOpen)}
-          aria-label="Toggle navigation menu"
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") setIsNavOpen(!isNavOpen);
-          }}
-        >
-          <span></span><span></span><span></span>
-        </div>
+
+        {showPinInput && (
+          <div className="category-pin-container">
+            <input
+              type="password"
+              placeholder="Enter Admin PIN"
+              className="category-pin-input"
+              value={pin}
+              onChange={(e) => setPin(e.target.value)}
+            />
+            <button onClick={handlePinSubmit} className="category-pin-submit-btn">Submit</button>
+            {error && <p className="category-pin-error">{error}</p>}
+          </div>
+        )}
       </nav>
 
-      <header className="hero">
-        <h1>Explore Categories</h1>
-        <p>Discover wallpapers tailored to your vibe.</p>
-      </header>
+      <main className="category-main-content">
+        <section className="category-hero">
+          <div className="category-hero-content">
+            <h1 className="category-glitch" data-text="Explore Categories">Explore Categories</h1>
+            <p className="category-hero-text">Discover wallpapers tailored to your vibe.</p>
+          </div>
+        </section>
 
-      <div className="category-filters">
-        <button className={!selectedCategory ? "active" : ""} onClick={() => setSelectedCategory(null)}>All</button>
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            className={selectedCategory === cat ? "active" : ""}
-            onClick={() => setSelectedCategory(cat)}
+        <div className="category-strip">
+          <div
+            className={`category-pill ${selectedCategory === null ? "active" : ""}`}
+            onClick={() => setSelectedCategory(null)}
           >
-            {cat}
-          </button>
-        ))}
-      </div>
-
-      <section className="wallpapers">
-        <div className="tabs">
-          <button className={activeTab === "pc" ? "active" : ""} onClick={() => setActiveTab("pc")}>PC</button>
-          <button className={activeTab === "mobile" ? "active" : ""} onClick={() => setActiveTab("mobile")}>Mobile</button>
-        </div>
-        <div className="gallery">
-          {(activeTab === "pc" ? pcWallpapers : mobileWallpapers).map((wallpaper) => (
-            <div key={wallpaper._id} className="wallpaper-card" onClick={() => openModal(wallpaper)}>
-              <img
-                src={getImageUrl(wallpaper.thumbnail_url || wallpaper.image_url)}
-                alt={wallpaper.name}
-                loading="lazy"
-              />
+            All
+          </div>
+          {categories.map((cat) => (
+            <div
+              key={cat}
+              className={`category-pill ${selectedCategory === cat ? "active" : ""}`}
+              onClick={() => setSelectedCategory(cat)}
+            >
+              {cat}
             </div>
           ))}
         </div>
-        {(activeTab === "pc" ? pcWallpapers : mobileWallpapers).length === 0 && (
-          <p>No {activeTab} wallpapers in this category.</p>
-        )}
-      </section>
 
-      {selectedWallpaper && (
-        <div className="category-modal fade-in">
-          <div className="category-modal-content glass-effect">
-            <button className="category-modal-close" onClick={closeModal} aria-label="Close modal">✕</button>
-            <div className="category-modal-image-container">
-              <img src={getImageUrl(selectedWallpaper.image_url)} alt={selectedWallpaper.name} />
-            </div>
-            <div className="category-modal-details">
-              <h2>{selectedWallpaper.name}</h2>
-              <p><strong>Description:</strong> {selectedWallpaper.description}</p>
-              <p><strong>Category:</strong> {selectedWallpaper.category}</p>
-              <p><strong>Device:</strong> {selectedWallpaper.device}</p>
-              <button
-                className="category-download-btn shine"
-                onClick={() => handleDownload(getImageUrl(selectedWallpaper.image_url), selectedWallpaper.name)}
-                disabled={isDownloading}
-              >
-                {isDownloading ? "Downloading..." : "Download"}
-              </button>
-            </div>
+        <section className="category-wallpapers">
+          <h2 className="category-wallpapers-heading">{selectedCategory || "All"} Wallpapers</h2>
+          <div className="category-tabs">
+            <button
+              className={`category-tab-btn ${activeTab === "pc" ? "active" : ""}`}
+              onClick={() => setActiveTab("pc")}
+            >
+              PC Wallpapers
+            </button>
+            <button
+              className={`category-tab-btn ${activeTab === "mobile" ? "active" : ""}`}
+              onClick={() => setActiveTab("mobile")}
+            >
+              Mobile Wallpapers
+            </button>
           </div>
-          <div className="category-modal-backdrop" onClick={closeModal}></div>
-        </div>
-      )}
 
-      <footer className="category-footer glass-effect" id="contact">
-        <p>Developed and maintained by Vatsal Bairagi</p>
-        <p>Email: <a href="mailto:support@wallpaperhub.com">support@wallpaperhub.com</a></p>
-        <p>Instagram: <a href="https://instagram.com/wallpaperhub" target="_blank" rel="noopener noreferrer">@wallpaperhub</a></p>
-        <p>© 2025 WallpaperHub. All rights reserved.</p>
+          <div className="category-wallpapers-gallery">
+            {(activeTab === "pc" ? pcWallpapers : mobileWallpapers).length > 0 ? (
+              (activeTab === "pc" ? pcWallpapers : mobileWallpapers).map((wallpaper) => (
+                <div
+                  key={wallpaper._id}
+                  className={`category-wallpaper-card ${activeTab === "pc" ? "landscape" : "portrait"}`}
+                  onClick={() => openModal(wallpaper)}
+                >
+                  <img
+                    src={getImageUrl(wallpaper.thumbnail_url || wallpaper.image_url)}
+                    alt={wallpaper.name}
+                    className="category-wallpaper-image"
+                    loading="lazy"
+                  />
+                </div>
+              ))
+            ) : (
+              <p className="category-no-wallpapers">No {activeTab} wallpapers in this category.</p>
+            )}
+          </div>
+        </section>
+
+        {selectedWallpaper && (
+          <WallpaperModal
+            wallpaper={selectedWallpaper}
+            onClose={closeModal}
+            onDownload={handleDownload}
+            isDownloading={isDownloading}
+            getImageUrl={getImageUrl}
+          />
+        )}
+
+        <section id="contact" className="category-contact-section">
+          <h2 className="category-contact-heading">Contact Us</h2>
+          <p className="category-contact-text">Developed and Maintained by Vatsal Bairagi</p>
+          <div className="category-contact-info">
+            <p>Email: <a href="mailto:support@wallpaperhub.com">support@wallpaperhub.com</a></p>
+            <p>Instagram: <a href="https://instagram.com/wallpaperhub" target="_blank" rel="noreferrer">@wallpaperhub</a></p>
+          </div>
+          <form className="category-contact-form">
+            <input type="text" className="category-input" placeholder="Your Name" required />
+            <input type="email" className="category-input" placeholder="Your Email" required />
+            <textarea className="category-textarea" placeholder="Your Message" required></textarea>
+            <button type="button" className="category-submit-btn">Send Message</button>
+          </form>
+        </section>
+      </main>
+
+      <footer className="category-footer">
+        <p>© 2025 WallpaperHub. Built and maintained with 💪 by <strong>Vatsal Bairagi</strong></p>
+        <div className="category-social-links">
+          <a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a>
+          <a href="https://github.com/vatsalbairagi" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
       </footer>
     </div>
   );
 };
+
+const WallpaperModal = ({ wallpaper, onClose, onDownload, isDownloading, getImageUrl }) => (
+  <div className="category-modal">
+    <div className="category-modal-content">
+      <button className="category-modal-close" onClick={onClose}>✕</button>
+      <div className="category-modal-image-container">
+        <img
+          src={getImageUrl(wallpaper.image_url)}
+          alt={wallpaper.name}
+          className="category-modal-image"
+        />
+      </div>
+      <div className="category-modal-details">
+        <h2>{wallpaper.name}</h2>
+        <p><strong>Description:</strong> {wallpaper.description}</p>
+        <p><strong>Category:</strong> {wallpaper.category}</p>
+        <p><strong>Device:</strong> {wallpaper.device}</p>
+        <button
+          onClick={() => onDownload(getImageUrl(wallpaper.image_url), wallpaper.name)}
+          disabled={isDownloading}
+          className="category-download-btn"
+        >
+          {isDownloading ? "Downloading..." : "Download"}
+        </button>
+      </div>
+    </div>
+    <div className="category-modal-backdrop" onClick={onClose}></div>
+  </div>
+);
 
 export default CategoryPage;
