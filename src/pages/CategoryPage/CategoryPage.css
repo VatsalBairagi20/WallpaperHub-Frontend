@@ -1,5 +1,4 @@
-/* Category Page CSS */
-
+/* General Reset & Base */
 body, html {
   margin: 0;
   padding: 0;
@@ -10,6 +9,25 @@ body, html {
   overflow-x: hidden;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Utility Classes */
+.gradient-text {
+  background: linear-gradient(90deg, #ff7b00, #ff00a8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Navbar */
 .homepage-navbar {
   display: flex;
   justify-content: space-between;
@@ -19,6 +37,7 @@ body, html {
   width: 100%;
   top: 0;
   z-index: 999;
+  box-sizing: border-box;
   background: #0f0f0f;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -26,26 +45,18 @@ body, html {
 .homepage-logo {
   font-size: 1.8rem;
   font-weight: bold;
-  color: #ff7b00;
-}
-
-.gradient-text {
-  background: linear-gradient(to right, #ff7b00, #ffcf00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 .homepage-nav-links {
   display: flex;
   list-style: none;
   gap: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .homepage-nav-links li a {
-  color: #fff;
   font-weight: 500;
   transition: color 0.3s;
-  text-decoration: none;
 }
 
 .homepage-nav-links li a:hover {
@@ -55,49 +66,18 @@ body, html {
 .homepage-hamburger {
   display: none;
   flex-direction: column;
-  cursor: pointer;
   gap: 0.3rem;
+  cursor: pointer;
 }
 
 .homepage-hamburger span {
-  display: block;
   width: 25px;
   height: 3px;
   background: #fff;
   border-radius: 3px;
 }
 
-.login-btn {
-  background: #ff7b00;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  color: #fff;
-  cursor: pointer;
-}
-
-.pin-input input {
-  margin-top: 0.5rem;
-  padding: 0.5rem;
-  border-radius: 5px;
-  border: none;
-}
-
-.pin-input button {
-  margin-left: 0.5rem;
-  background: #ff7b00;
-  color: #fff;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.pin-input .error {
-  color: red;
-  margin-top: 0.5rem;
-}
-
+/* Hero Section */
 .hero {
   margin-top: 80px;
   padding: 3rem 2rem;
@@ -115,6 +95,7 @@ body, html {
   color: #ccc;
 }
 
+/* Category Filters */
 .category-filters {
   text-align: center;
   padding: 2rem 1rem;
@@ -137,6 +118,7 @@ body, html {
   border-color: #ff7b00;
 }
 
+/* Tabs */
 .tabs {
   text-align: center;
   margin-top: 2rem;
@@ -158,6 +140,7 @@ body, html {
   border-color: #ff7b00;
 }
 
+/* Gallery */
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -185,126 +168,116 @@ body, html {
   transform: scale(1.05);
 }
 
-.modal {
+/* Modal */
+.homepage-modal {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: center;
   z-index: 1000;
-  background-color: rgba(0, 0, 0, 0.8);
 }
 
-.modal-content {
-  background: #222;
-  max-width: 90%;
-  max-height: 90%;
-  overflow: auto;
-  padding: 1rem;
-  border-radius: 10px;
+.homepage-modal-backdrop {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.homepage-modal-content {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.modal-content img {
-  max-width: 100%;
+  background: #222;
+  padding: 2rem;
+  max-width: 90%;
   max-height: 80vh;
-  object-fit: contain;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  overflow-y: auto;
+  border-radius: 10px;
+  z-index: 1001;
+  color: #fff;
+  box-sizing: border-box;
 }
 
-.modal-content button {
-  margin-top: 1rem;
-  background: #ff7b00;
-  color: white;
-  border: none;
-  padding: 0.7rem 1.2rem;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.modal-content .close {
+.homepage-modal-close {
   position: absolute;
   top: 10px;
   right: 15px;
   background: transparent;
-  color: #fff;
-  font-size: 1.8rem;
   border: none;
+  color: #fff;
+  font-size: 1.5rem;
   cursor: pointer;
-  transition: 0.3s;
+  z-index: 1002;
 }
 
-.modal-content .close:hover {
-  color: #ff7b00;
-}
-
-.footer {
-  background: #0d0d0d;
-  padding: 2rem;
+.homepage-modal-image-container {
   text-align: center;
-  color: #ccc;
 }
 
-.footer a {
+.homepage-modal-image-container img {
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+.homepage-modal-details {
+  margin-top: 1rem;
+}
+
+.homepage-modal-details h2 {
+  margin-bottom: 0.5rem;
+}
+
+.homepage-download-btn {
+  margin-top: 1rem;
+  padding: 0.7rem 1.2rem;
+  background-color: #ff7b00;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.homepage-download-btn:hover {
+  background-color: #e86c00;
+}
+
+/* Footer */
+.homepage-footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  background: #111;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 3rem;
+}
+
+.homepage-footer a {
   color: #ff7b00;
-  margin: 0 0.5rem;
-  transition: color 0.3s;
+  text-decoration: underline;
 }
 
-.footer a:hover {
-  color: #ffa94d;
-}
-
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .homepage-nav-links {
     display: none;
     flex-direction: column;
-    background: #111;
+    gap: 1rem;
+    background: #1a1a1a;
+    padding: 1rem 0;
     position: absolute;
     top: 60px;
-    right: 0;
-    padding: 1rem;
-    border-radius: 8px;
-    z-index: 998;
+    right: 20px;
+    width: 200px;
+    border-radius: 10px;
   }
 
-  .homepage-nav-links.homepage-nav-active {
+  .homepage-nav-active {
     display: flex;
   }
 
   .homepage-hamburger {
     display: flex;
-  }
-
-  .gallery {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  }
-
-  .wallpaper-card {
-    height: 180px;
-  }
-
-  .hero h1 {
-    font-size: 2rem;
-  }
-
-  .hero p {
-    font-size: 1rem;
-  }
-
-  .modal-content {
-    padding: 1rem;
-    max-width: 95%;
-  }
-
-  .modal-content img {
-    max-height: 60vh;
   }
 }
