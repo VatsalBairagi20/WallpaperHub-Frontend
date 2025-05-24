@@ -1,4 +1,4 @@
-/* General Reset & Base */
+/* Base Reset */
 body, html {
   margin: 0;
   padding: 0;
@@ -14,162 +14,37 @@ a {
   text-decoration: none;
 }
 
-/* Utility Classes */
-.gradient-text {
-  background: linear-gradient(90deg, #ff7b00, #ff00a8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.glass-effect {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Navbar */
-.homepage-navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  z-index: 999;
-  box-sizing: border-box;
-  background: #0f0f0f;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.homepage-logo {
-  font-size: 1.8rem;
-  font-weight: bold;
-}
-
-.homepage-nav-links {
-  display: flex;
-  list-style: none;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.homepage-nav-links li a {
-  font-weight: 500;
-  transition: color 0.3s;
-}
-
-.homepage-nav-links li a:hover {
-  color: #ff7b00;
-}
-
-.homepage-hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 0.3rem;
-  cursor: pointer;
-}
-
-.homepage-hamburger span {
-  width: 25px;
-  height: 3px;
-  background: #fff;
-  border-radius: 3px;
-}
-
-/* Hero Section */
-.hero {
-  margin-top: 80px;
-  padding: 3rem 2rem;
-  background: #1a1a1a;
-  text-align: center;
-}
-
-.hero h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.hero p {
-  font-size: 1.2rem;
-  color: #ccc;
-}
-
-/* Category Filters */
-.category-filters {
-  text-align: center;
-  padding: 2rem 1rem;
-  background: #111;
-}
-
-.category-filters button {
-  margin: 0.5rem;
-  padding: 0.5rem 1rem;
-  border: 2px solid #fff;
-  background: none;
-  color: #fff;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.category-filters .active {
-  background: #ff7b00;
-  border-color: #ff7b00;
-}
-
-/* Tabs */
-.tabs {
-  text-align: center;
-  margin-top: 2rem;
-}
-
-.tabs button {
-  background: none;
-  border: 2px solid #fff;
-  color: #fff;
-  padding: 0.5rem 1rem;
-  margin: 0 1rem;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.tabs .active {
-  background: #ff7b00;
-  border-color: #ff7b00;
-}
-
-/* Gallery */
-.gallery {
+/* General Layout */
+.grid-responsive {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 1.5rem;
-  padding: 2rem;
-  background: #1a1a1a;
+  margin-top: 2rem;
 }
 
-.wallpaper-card {
+/* Wallpaper Cards */
+.category-wallpaper-card {
   overflow: hidden;
-  border-radius: 12px;
+  position: relative;
   cursor: pointer;
+  border-radius: 12px;
   transition: transform 0.3s ease;
   height: 250px;
 }
 
-.wallpaper-card img {
+.category-wallpaper-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.wallpaper-card:hover {
+.hover-zoom:hover {
   transform: scale(1.05);
 }
 
 /* Modal */
-.homepage-modal {
+.category-modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -181,14 +56,14 @@ a {
   z-index: 1000;
 }
 
-.homepage-modal-backdrop {
+.category-modal-backdrop {
   position: absolute;
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.8);
 }
 
-.homepage-modal-content {
+.category-modal-content {
   position: relative;
   background: #222;
   padding: 2rem;
@@ -201,7 +76,7 @@ a {
   box-sizing: border-box;
 }
 
-.homepage-modal-close {
+.category-modal-close {
   position: absolute;
   top: 10px;
   right: 15px;
@@ -213,24 +88,13 @@ a {
   z-index: 1002;
 }
 
-.homepage-modal-image-container {
-  text-align: center;
-}
-
-.homepage-modal-image-container img {
-  max-width: 100%;
+.category-modal-image {
+  width: 100%;
   border-radius: 10px;
+  margin-bottom: 1rem;
 }
 
-.homepage-modal-details {
-  margin-top: 1rem;
-}
-
-.homepage-modal-details h2 {
-  margin-bottom: 0.5rem;
-}
-
-.homepage-download-btn {
+.category-download-btn {
   margin-top: 1rem;
   padding: 0.7rem 1.2rem;
   background-color: #ff7b00;
@@ -238,46 +102,92 @@ a {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background 0.3s;
 }
 
-.homepage-download-btn:hover {
+.category-download-btn:hover {
   background-color: #e86c00;
 }
 
-/* Footer */
-.homepage-footer {
-  text-align: center;
-  padding: 2rem 1rem;
+/* Contact Section */
+.category-contact-section {
+  padding: 2rem;
   background: #111;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  margin-top: 3rem;
+  text-align: center;
 }
 
-.homepage-footer a {
+.category-contact-info a {
   color: #ff7b00;
-  text-decoration: underline;
+  font-weight: 500;
 }
 
-@media screen and (max-width: 768px) {
-  .homepage-nav-links {
-    display: none;
-    flex-direction: column;
-    gap: 1rem;
-    background: #1a1a1a;
-    padding: 1rem 0;
+/* Footer */
+.category-footer {
+  background: #0d0d0d;
+  padding: 1rem 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 3rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.category-social-links a {
+  margin: 0 0.5rem;
+  color: #ff7b00;
+  transition: color 0.3s;
+}
+
+.category-social-links a:hover {
+  color: #ffa94d;
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Nav + Mobile Fixes */
+@media (max-width: 768px) {
+  .category-nav-links {
     position: absolute;
     top: 60px;
-    right: 20px;
+    right: 0;
+    background: #111;
+    flex-direction: column;
     width: 200px;
-    border-radius: 10px;
+    display: none;
+    padding: 1rem;
+    border-radius: 5px;
+    z-index: 1001;
   }
 
-  .homepage-nav-active {
+  .category-nav-active {
     display: flex;
   }
 
-  .homepage-hamburger {
+  .category-hamburger {
     display: flex;
+  }
+
+  .category-logo {
+    font-size: 1.3rem;
+  }
+
+  .category-hero {
+    height: 60vh;
+    margin-top: 70px;
+  }
+
+  .category-hero-title {
+    font-size: 2rem;
+  }
+
+  .category-cta-button {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
   }
 }
