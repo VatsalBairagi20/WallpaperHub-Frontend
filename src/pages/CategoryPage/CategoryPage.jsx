@@ -30,6 +30,15 @@ const CategoryPage = () => {
     return () => window.removeEventListener("keydown", handleEsc);
   }, []);
 
+  // Lock body scroll when nav is open (mobile)
+  useEffect(() => {
+    if (isNavOpen) {
+      document.body.classList.add("nav-open");
+    } else {
+      document.body.classList.remove("nav-open");
+    }
+  }, [isNavOpen]);
+
   const filteredWallpapers = selectedCategory
     ? wallpapers.filter((wp) => wp.category === selectedCategory)
     : wallpapers;
@@ -76,7 +85,16 @@ const CategoryPage = () => {
           <li><a href="/categories">Categories</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
-        <div className="category-hamburger" onClick={() => setIsNavOpen(!isNavOpen)}>
+        <div
+          className="category-hamburger"
+          onClick={() => setIsNavOpen(!isNavOpen)}
+          aria-label="Toggle navigation menu"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") setIsNavOpen(!isNavOpen);
+          }}
+        >
           <span></span><span></span><span></span>
         </div>
       </nav>
@@ -110,7 +128,6 @@ const CategoryPage = () => {
               <img
                 src={getImageUrl(wallpaper.thumbnail_url || wallpaper.image_url)}
                 alt={wallpaper.name}
-                className={`wallpaper-image ${wallpaper.device}`}
                 loading="lazy"
               />
             </div>
@@ -123,14 +140,10 @@ const CategoryPage = () => {
 
       {selectedWallpaper && (
         <div className="category-modal fade-in">
-          <div className="category-modal-content glass-effect slide-up">
-            <button className="category-modal-close" onClick={closeModal}>✕</button>
+          <div className="category-modal-content glass-effect">
+            <button className="category-modal-close" onClick={closeModal} aria-label="Close modal">✕</button>
             <div className="category-modal-image-container">
-              <img
-                src={getImageUrl(selectedWallpaper.image_url)}
-                alt={selectedWallpaper.name}
-                className={`modal-image ${selectedWallpaper.device}`}
-              />
+              <img src={getImageUrl(selectedWallpaper.image_url)} alt={selectedWallpaper.name} />
             </div>
             <div className="category-modal-details">
               <h2>{selectedWallpaper.name}</h2>
@@ -153,7 +166,7 @@ const CategoryPage = () => {
       <footer className="category-footer glass-effect" id="contact">
         <p>Developed and maintained by Vatsal Bairagi</p>
         <p>Email: <a href="mailto:support@wallpaperhub.com">support@wallpaperhub.com</a></p>
-        <p>Instagram: <a href="https://instagram.com/wallpaperhub" target="_blank">@wallpaperhub</a></p>
+        <p>Instagram: <a href="https://instagram.com/wallpaperhub" target="_blank" rel="noopener noreferrer">@wallpaperhub</a></p>
         <p>© 2025 WallpaperHub. All rights reserved.</p>
       </footer>
     </div>
