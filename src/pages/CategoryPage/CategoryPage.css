@@ -14,16 +14,136 @@ a {
   text-decoration: none;
 }
 
-/* General Layout */
-.grid-responsive {
+/* Navbar */
+.category-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(17, 17, 17, 0.85);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.category-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, #ff7b00, #ffbf00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.category-nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.category-nav-links li a {
+  color: #fff;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.category-nav-links li a:hover {
+  color: #ff7b00;
+}
+
+.category-hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 4px;
+}
+
+.category-hamburger span {
+  width: 25px;
+  height: 3px;
+  background: #fff;
+  border-radius: 2px;
+}
+
+/* Hero */
+.hero {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  color: #ccc;
+}
+
+/* Filters */
+.category-filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 2rem 1rem;
+}
+
+.category-filters button {
+  padding: 0.5rem 1rem;
+  background: #222;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.category-filters .active {
+  background: #ff7b00;
+  border-color: #ff7b00;
+}
+
+.category-filters button:hover {
+  background: #333;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.tabs button {
+  padding: 0.6rem 1.2rem;
+  background: #1a1a1a;
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.tabs .active {
+  background: #ff7b00;
+}
+
+.tabs button:hover {
+  background: #333;
+}
+
+/* Wallpaper Gallery */
+.gallery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 1.5rem;
-  margin-top: 2rem;
+  padding: 0 2rem;
+  margin-bottom: 3rem;
 }
 
-/* Wallpaper Cards */
-.category-wallpaper-card {
+.wallpaper-card {
   overflow: hidden;
   position: relative;
   cursor: pointer;
@@ -32,14 +152,14 @@ a {
   height: 250px;
 }
 
-.category-wallpaper-image {
+.wallpaper-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.hover-zoom:hover {
+.wallpaper-card:hover {
   transform: scale(1.05);
 }
 
@@ -88,10 +208,14 @@ a {
   z-index: 1002;
 }
 
-.category-modal-image {
+.category-modal-image-container img {
   width: 100%;
   border-radius: 10px;
   margin-bottom: 1rem;
+}
+
+.category-modal-details {
+  text-align: left;
 }
 
 .category-download-btn {
@@ -108,18 +232,6 @@ a {
   background-color: #e86c00;
 }
 
-/* Contact Section */
-.category-contact-section {
-  padding: 2rem;
-  background: #111;
-  text-align: center;
-}
-
-.category-contact-info a {
-  color: #ff7b00;
-  font-weight: 500;
-}
-
 /* Footer */
 .category-footer {
   background: #0d0d0d;
@@ -130,13 +242,12 @@ a {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.category-social-links a {
-  margin: 0 0.5rem;
+.category-footer a {
   color: #ff7b00;
   transition: color 0.3s;
 }
 
-.category-social-links a:hover {
+.category-footer a:hover {
   color: #ffa94d;
 }
 
@@ -177,16 +288,15 @@ a {
     font-size: 1.3rem;
   }
 
-  .category-hero {
-    height: 60vh;
+  .hero {
     margin-top: 70px;
   }
 
-  .category-hero-title {
+  .hero h1 {
     font-size: 2rem;
   }
 
-  .category-cta-button {
+  .category-download-btn {
     font-size: 0.9rem;
     padding: 0.6rem 1.2rem;
   }
