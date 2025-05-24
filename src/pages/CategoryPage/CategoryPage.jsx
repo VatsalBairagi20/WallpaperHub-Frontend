@@ -13,41 +13,25 @@ const CategoryPage = () => {
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // NEW
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAllData = async () => {
       try {
-        // Fetch backend wallpapers
         const backendRes = await fetch(`https://wallpaperhub-backend.onrender.com/api/get-wallpapers`);
         const backendData = await backendRes.json();
 
-        // Fetch backend categories
         const categoryRes = await fetch(`https://wallpaperhub-backend.onrender.com/api/get-categories`);
         const categoryData = await categoryRes.json();
 
-        // Fetch from Nekos API
-        const nekosRes = await fetch("https://nekosapi.com/api/v3/images/random?limit=20");
-        const nekosData = await nekosRes.json();
-
-        const nekosWallpapers = nekosData.items.map((img, index) => ({
-          _id: `nekos-${index}`,
-          name: "Anime Wallpaper",
-          description: "Sourced from Nekos API",
-          category: "Anime",
-          device: img.width > img.height ? "pc" : "mobile",
-          image_url: img.url,
-          thumbnail_url: img.url, // Same image used as thumbnail
-        }));
-
-        const combinedWallpapers = [...backendData.wallpapers, ...nekosWallpapers];
-        const combinedCategories = [...new Set([...categoryData.categories, "Anime"])];
-
-        setWallpapers(combinedWallpapers);
-        setCategories(combinedCategories);
+        setWallpapers(backendData.wallpapers);
+        setCategories(categoryData.categories);
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false); // ✅ stop showing loading
       }
     };
 
@@ -187,26 +171,30 @@ const CategoryPage = () => {
             </button>
           </div>
 
-          <div className="category-wallpapers-gallery">
-            {(activeTab === "pc" ? pcWallpapers : mobileWallpapers).length > 0 ? (
-              (activeTab === "pc" ? pcWallpapers : mobileWallpapers).map((wallpaper) => (
-                <div
-                  key={wallpaper._id}
-                  className={`category-wallpaper-card ${activeTab === "pc" ? "landscape" : "portrait"}`}
-                  onClick={() => openModal(wallpaper)}
-                >
-                  <img
-                    src={getImageUrl(wallpaper.thumbnail_url || wallpaper.image_url)}
-                    alt={wallpaper.name}
-                    className="category-wallpaper-image"
-                    loading="lazy"
-                  />
-                </div>
-              ))
-            ) : (
-              <p className="category-no-wallpapers">No {activeTab} wallpapers in this category.</p>
-            )}
-          </div>
+          {isLoading ? (
+            <p className="category-loading-text">🌀 Images loading, please wait...</p>
+          ) : (
+            <div className="category-wallpapers-gallery">
+              {(activeTab === "pc" ? pcWallpapers : mobileWallpapers).length > 0 ? (
+                (activeTab === "pc" ? pcWallpapers : mobileWallpapers).map((wallpaper) => (
+                  <div
+                    key={wallpaper._id}
+                    className={`category-wallpaper-card ${activeTab === "pc" ? "landscape" : "portrait"}`}
+                    onClick={() => openModal(wallpaper)}
+                  >
+                    <img
+                      src={getImageUrl(wallpaper.thumbnail_url || wallpaper.image_url)}
+                      alt={wallpaper.name}
+                      className="category-wallpaper-image"
+                      loading="lazy"
+                    />
+                  </div>
+                ))
+              ) : (
+                <p className="category-no-wallpapers">No {activeTab} wallpapers in this category.</p>
+              )}
+            </div>
+          )}
         </section>
 
         {selectedWallpaper && (
