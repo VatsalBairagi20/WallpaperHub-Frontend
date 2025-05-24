@@ -1,4 +1,3 @@
-// Updated CategoryPage.jsx with category-style navbar
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CategoryPage.css";
@@ -111,6 +110,7 @@ const CategoryPage = () => {
               <img
                 src={getImageUrl(wallpaper.thumbnail_url || wallpaper.image_url)}
                 alt={wallpaper.name}
+                className={`wallpaper-image ${wallpaper.device}`}
                 loading="lazy"
               />
             </div>
@@ -123,10 +123,14 @@ const CategoryPage = () => {
 
       {selectedWallpaper && (
         <div className="category-modal fade-in">
-          <div className="category-modal-content glass-effect">
+          <div className="category-modal-content glass-effect slide-up">
             <button className="category-modal-close" onClick={closeModal}>✕</button>
             <div className="category-modal-image-container">
-              <img src={getImageUrl(selectedWallpaper.image_url)} alt={selectedWallpaper.name} />
+              <img
+                src={getImageUrl(selectedWallpaper.image_url)}
+                alt={selectedWallpaper.name}
+                className={`modal-image ${selectedWallpaper.device}`}
+              />
             </div>
             <div className="category-modal-details">
               <h2>{selectedWallpaper.name}</h2>
