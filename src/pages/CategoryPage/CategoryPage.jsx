@@ -1,4 +1,4 @@
-// Updated CategoryPage.jsx with HomePage-style navbar
+// Updated CategoryPage.jsx with category-style navbar
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CategoryPage.css";
@@ -70,14 +70,14 @@ const CategoryPage = () => {
 
   return (
     <div className="category-page">
-      <nav className="homepage-navbar glass-effect">
-        <div className="homepage-logo gradient-text">WallpaperHub</div>
-        <ul className={`homepage-nav-links ${isNavOpen ? "homepage-nav-active" : ""}`}>
+      <nav className="category-navbar glass-effect">
+        <div className="category-logo gradient-text">WallpaperHub</div>
+        <ul className={`category-nav-links ${isNavOpen ? "category-nav-active" : ""}`}>
           <li><a href="/">Home</a></li>
           <li><a href="/categories">Categories</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
-        <div className="homepage-hamburger" onClick={() => setIsNavOpen(!isNavOpen)}>
+        <div className="category-hamburger" onClick={() => setIsNavOpen(!isNavOpen)}>
           <span></span><span></span><span></span>
         </div>
       </nav>
@@ -122,19 +122,19 @@ const CategoryPage = () => {
       </section>
 
       {selectedWallpaper && (
-        <div className="homepage-modal fade-in">
-          <div className="homepage-modal-content glass-effect">
-            <button className="homepage-modal-close" onClick={closeModal}>✕</button>
-            <div className="homepage-modal-image-container">
+        <div className="category-modal fade-in">
+          <div className="category-modal-content glass-effect">
+            <button className="category-modal-close" onClick={closeModal}>✕</button>
+            <div className="category-modal-image-container">
               <img src={getImageUrl(selectedWallpaper.image_url)} alt={selectedWallpaper.name} />
             </div>
-            <div className="homepage-modal-details">
+            <div className="category-modal-details">
               <h2>{selectedWallpaper.name}</h2>
               <p><strong>Description:</strong> {selectedWallpaper.description}</p>
               <p><strong>Category:</strong> {selectedWallpaper.category}</p>
               <p><strong>Device:</strong> {selectedWallpaper.device}</p>
               <button
-                className="homepage-download-btn shine"
+                className="category-download-btn shine"
                 onClick={() => handleDownload(getImageUrl(selectedWallpaper.image_url), selectedWallpaper.name)}
                 disabled={isDownloading}
               >
@@ -142,11 +142,11 @@ const CategoryPage = () => {
               </button>
             </div>
           </div>
-          <div className="homepage-modal-backdrop" onClick={closeModal}></div>
+          <div className="category-modal-backdrop" onClick={closeModal}></div>
         </div>
       )}
 
-      <footer className="homepage-footer glass-effect" id="contact">
+      <footer className="category-footer glass-effect" id="contact">
         <p>Developed and maintained by Vatsal Bairagi</p>
         <p>Email: <a href="mailto:support@wallpaperhub.com">support@wallpaperhub.com</a></p>
         <p>Instagram: <a href="https://instagram.com/wallpaperhub" target="_blank">@wallpaperhub</a></p>
