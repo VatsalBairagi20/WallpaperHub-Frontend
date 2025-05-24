@@ -92,28 +92,29 @@ const CategoryPage = () => {
 
   return (
     <div className="category-page-container">
-      <nav className="category-navbar">
-        <div className="category-logo">WallpaperHub</div>
+  <nav className="category-navbar">
+  <div className="category-logo">WallpaperHub</div>
 
-        <button className="category-hamburger" onClick={toggleMenu} aria-label="Toggle menu">
-          <span className={`bar ${menuOpen ? "open" : ""}`}></span>
-          <span className={`bar ${menuOpen ? "open" : ""}`}></span>
-          <span className={`bar ${menuOpen ? "open" : ""}`}></span>
-        </button>
+  {/* Hamburger icon on the right of logo */}
+  <button className="category-hamburger" onClick={toggleMenu} aria-label="Toggle menu">
+    <span className={`bar ${menuOpen ? "open" : ""}`}></span>
+    <span className={`bar ${menuOpen ? "open" : ""}`}></span>
+    <span className={`bar ${menuOpen ? "open" : ""}`}></span>
+  </button>
 
-        <ul className={`category-nav-links ${menuOpen ? "open" : ""}`}>
-          <li><a href="/">Home</a></li>
-          <li><a href="/categories">Categories</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li>
-            <button onClick={() => {
-              setShowPinInput(!showPinInput);
-              setMenuOpen(false);
-            }} className="category-login-btn">🔐 Login</button>
-          </li>
-        </ul>
-
-        {showPinInput && (
+  {/* Nav links */}
+  <ul className={`category-nav-links ${menuOpen ? "open" : ""}`}>
+    <li><a href="/">Home</a></li>
+    <li><a href="/categories">Categories</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li>
+      <button onClick={() => {
+        setShowPinInput(!showPinInput);
+        setMenuOpen(false);
+      }} className="category-login-btn">🔐 Login</button>
+    </li>
+  </ul>
+ {showPinInput && (
           <div className="category-pin-container">
             <input
               type="password"
